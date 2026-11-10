@@ -6,9 +6,11 @@
 
 ## Team
 
-- Team:
+- Team: GG
 - Members:
-- Provider/model:
+  - Nguyễn Xuân Hùng — MSSV: 2A202603599
+- GitHub: [XuanHung1703](https://github.com/XuanHung1703)
+- Provider/model: Gemini / Finding Extension AI
 
 ---
 
