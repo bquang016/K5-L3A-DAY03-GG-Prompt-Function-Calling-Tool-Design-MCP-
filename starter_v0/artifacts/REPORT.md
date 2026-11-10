@@ -6,7 +6,7 @@
 
 ## Team
 
-- Team: Research Agent Studio Team
+- Team: GG
 - Members:
   - Bùi Đăng Quang - MSSV: 2A202603640
   - Nguyễn Đức Trọng - MSSV: 2A202603644
