@@ -28,3 +28,4 @@
   - **Trịnh Quốc Đạt** - MSSV: `2A202603581`
   - **Nguyễn Xuân Hùng** - MSSV: `2A202603599`
 - Đã cập nhật link trực tiếp và thông tin nhóm vào **[artifacts/poster.html](file:///c:/Users/buida/vinuni_day03_lab/K5-L3A-DAY03-GG-Prompt-Function-Calling-Tool-Design-MCP-/starter_v0/artifacts/poster.html)**.
+
