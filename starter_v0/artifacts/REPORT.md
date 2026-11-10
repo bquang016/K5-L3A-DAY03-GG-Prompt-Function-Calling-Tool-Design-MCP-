@@ -61,7 +61,7 @@ Fill from `artifacts/version_log.csv` and `runs/*.json`.
 | v0 | baseline | starter baseline with deliberate flaws (guessing instead of clarify, immediate send) | N/A | 65.0% | `runs/v0_B_base_gemini_20261110T104036405787.json` |
 | v1 | `artifacts/system_prompt.md` | fix guessing and single-step bias, remove bad instructions and enforce clarify/parallel rules | 65.0% | 76.5% | `runs/v1_B_base_gemini_20261110T104451079167.json` |
 | v2 | `artifacts/tools.yaml` | specify tool boundaries and required params, clarify parameter requirements and acronym preservation | 76.5% | 95.0% | `runs/v2_B_base_gemini_20261110T104952520561.json` |
-| v3 | integrated `domain_summary` | integrate new tool while maintaining 100% routing accuracy | 95.0% | 95.0% (100% routing) | `runs/v3_B_base_gemini_20261110T112600283045.json` |
+| v3 | integrated `domain_summary` & English prompt | integrate new tool and English prompt reaching 100% accuracy on base and group | 95.0% | 100.0% (20/20 base, 10/10 group) | `runs/v3_B_base_gemini_20261110T124151956683.json` |
 
 ## B2. Failure Analysis
 

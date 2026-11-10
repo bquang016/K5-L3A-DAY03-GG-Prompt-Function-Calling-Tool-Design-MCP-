@@ -37,3 +37,4 @@
 
 ### D. Hoàn thiện báo cáo toàn diện `artifacts/REPORT.md`
 - Đã điền đầy đủ cả **Phần A** (A1, A2, A3) và **Phần B** (B1: Version Evidence, B2: Failure Analysis chi tiết từ v0, B3: 10 Group Eval Cases, B4: Live Chat Evidence, B5: Bonus Guardrail, Injection Defense, UI & Unit Tests).
+
