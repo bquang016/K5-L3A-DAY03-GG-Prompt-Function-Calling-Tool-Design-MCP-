@@ -4,6 +4,7 @@ import html
 import json
 import os
 import threading
+import time
 from contextlib import nullcontext
 from datetime import datetime
 from pathlib import Path
@@ -351,16 +352,58 @@ CUSTOM_CSS = """
         border-radius: 12px !important;
     }
     .sider-user-msg {
-        background: #EFF6FF;
-        border: 1px solid #DBEAFE;
-        border-radius: 14px 14px 4px 14px;
-        padding: 10px 14px;
-        font-size: 0.9rem;
-        color: #172554;
-        line-height: 1.5;
-        margin-left: auto;
+        background: linear-gradient(135deg, #ECF7FF, #E8F0FF);
+        border: 1px solid #D6E8F8;
+        border-radius: 18px 18px 5px 18px;
+        padding: 11px 15px;
+        font-size: 0.92rem;
+        color: #23435F;
+        line-height: 1.55;
+        margin: 4px 0 4px auto;
         width: fit-content;
-        max-width: 90%;
+        max-width: 88%;
+        box-shadow: 0 2px 8px rgba(62, 113, 155, 0.06);
+    }
+    [class*="st-key-sider_assistant_"] {
+        padding: 12px 15px;
+        border: 1px solid #E8EDF5;
+        border-radius: 18px 18px 18px 5px;
+        background: #FAFBFE;
+        color: #27364B;
+    }
+    .sider-sending {
+        position: relative;
+        min-height: 44px;
+    }
+    .sider-sending-dots {
+        position: absolute;
+        right: 16px;
+        bottom: 4px;
+        display: flex;
+        gap: 5px;
+        animation: sider-dots-fly 650ms ease-out both;
+    }
+    .sider-sending-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #8F83E9;
+    }
+    .sider-sending .sider-user-msg {
+        animation: sider-bubble-arrive 650ms ease-out both;
+    }
+    @keyframes sider-dots-fly {
+        0% { opacity: 1; transform: translateY(28px) scale(.8); }
+        60% { opacity: 1; transform: translateY(-4px) scale(1); }
+        100% { opacity: 0; transform: translateY(-10px) scale(.7); }
+    }
+    @keyframes sider-bubble-arrive {
+        0%, 40% { opacity: 0; transform: translateY(20px) scale(.94); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .sider-sending-dots { display: none; }
+        .sider-sending .sider-user-msg { animation: none; }
     }
     .sider-thought-step {
         display: flex;
@@ -892,9 +935,9 @@ if is_sidepanel_only:
                 font-family: Inter, "Segoe UI", sans-serif;
             }
             .sider-user-msg {
-                background: #F3F0FF;
-                border-color: #E7E0FF;
-                color: #312060;
+                background: linear-gradient(135deg, #F0F5FF, #ECEAFF);
+                border-color: #DEDFF8;
+                color: #373267;
             }
             @media (max-width: 300px) {
                 .st-key-sider_navigation { width: 3.5rem; }
@@ -996,9 +1039,9 @@ else:
             .sider-welcome h2 { line-height: 1.4; }
             .sider-welcome p { line-height: 1.6; }
             .sider-user-msg {
-                background: #F1F8FF;
-                border-color: #D8EAF8;
-                color: #234967;
+                background: linear-gradient(135deg, #ECF7FF, #E8F0FF);
+                border-color: #D6E8F8;
+                color: #23435F;
             }
             div[data-testid="stChatInput"] > div {
                 position: relative;
@@ -1521,7 +1564,7 @@ if col_workspace is not None:
 # =====================================================================
 # PANE PHẢI: THANH TRỢ LÝ AI (SIDER PANEL)
 # =====================================================================
-def render_turn_messages(turn: dict[str, Any]) -> None:
+def render_turn_messages(turn: dict[str, Any], index: int) -> None:
     user_text = html.escape(turn["user"])
     st.html(f'<div class="sider-user-msg">{user_text}</div>')
     assistant_text = turn.get("assistant_text") or ""
@@ -1533,7 +1576,8 @@ def render_turn_messages(turn: dict[str, Any]) -> None:
             f'{html.escape(assistant_text)}</div>'
         )
     else:
-        st.markdown(assistant_text or "_Trợ lý chưa trả về nội dung._")
+        with st.container(key=f"sider_assistant_{index}"):
+            st.markdown(assistant_text or "_Trợ lý chưa trả về nội dung._")
 
 
 def render_conversation_history(*, compact: bool) -> None:
@@ -1558,7 +1602,9 @@ def render_conversation_history(*, compact: bool) -> None:
                     st.error("Không thể mở hội thoại. Hãy tải lại danh sách.")
                 else:
                     st.rerun()
-            with delete_col.popover("×", help="Xóa hội thoại"):
+            with delete_col.popover(
+                "×", help="Xóa hội thoại", key=f"sider_delete_popover_{path.name}"
+            ):
                 st.write(f"Xóa hội thoại “{conversation_title(turns)}”?")
                 st.caption("Hội thoại sẽ bị xóa khỏi danh sách và tệp đã lưu.")
                 if st.button("Xác nhận xóa", key=f"sider_delete_{path.name}"):
@@ -1615,17 +1661,18 @@ with col_sider:
             if st.session_state.sider_save_error:
                 st.warning(st.session_state.sider_save_error)
             with (nullcontext() if is_sidepanel_only else st.container(height=555, border=False)):
+                welcome_placeholder = st.empty()
                 if st.session_state.ui_turns:
                     title = html.escape(conversation_title(st.session_state.ui_turns))
                     st.html(f'<div class="sider-conversation-title">{title}</div>')
                 else:
-                    st.html(
+                    welcome_placeholder.html(
                         '<div class="sider-welcome"><h2>Hỏi bất cứ điều gì hoặc giao một tác vụ</h2>'
                         '<p>Trò chuyện, tra cứu và nghiên cứu cùng trợ lý AI của bạn.</p></div>'
                     )
 
                 for idx, turn in enumerate(st.session_state.ui_turns):
-                    render_turn_messages(turn)
+                    render_turn_messages(turn, idx)
                     t_events = turn.get("tool_events") or []
                     if t_events:
                         with st.expander(f"Công cụ đã gọi · {len(t_events)}"):
@@ -1673,6 +1720,8 @@ with col_sider:
                                 st.session_state.pending_input = f"Tôi xác nhận đồng ý gửi nội dung này lên Telegram: {pending_tg_text}"
                                 st.rerun()
 
+                pending_placeholder = st.empty()
+
             # Native Chat Input at bottom of Sider panel (Enter to send)
             typed_prompt = st.chat_input(
                 "Hỏi bất cứ điều gì hoặc mô tả một tác vụ...",
@@ -1682,9 +1731,17 @@ with col_sider:
             st.session_state.pending_input = None
 
             if active_prompt and active_prompt.strip():
+                welcome_placeholder.empty()
+                user_text = active_prompt.strip()
+                pending_placeholder.html(
+                    '<div class="sider-sending">'
+                    '<div class="sider-sending-dots" aria-hidden="true"><span></span><span></span><span></span></div>'
+                    f'<div class="sider-user-msg">{html.escape(user_text)}</div></div>'
+                )
+                animation_started = time.monotonic()
                 with st.spinner("Đang phân tích và thực thi công cụ..."):
                     execute_agent_turn(
-                        user_text=active_prompt.strip(),
+                        user_text=user_text,
                         provider_name=st.session_state.cfg_provider,
                         model_override=st.session_state.cfg_model.strip() or None,
                         version_label=st.session_state.cfg_version.strip() or "v3",
@@ -1693,6 +1750,9 @@ with col_sider:
                         history_window=int(st.session_state.cfg_history),
                         max_tool_rounds=int(st.session_state.cfg_rounds),
                     )
+                remaining_animation = 0.65 - (time.monotonic() - animation_started)
+                if remaining_animation > 0:
+                    time.sleep(remaining_animation)
                 st.rerun()
 
         elif st.session_state.sider_tab == ":material/history: Lịch sử":
@@ -1724,12 +1784,6 @@ with col_sider:
                 help="Chọn v0..v3 hoặc tự gõ nhãn mới rồi nhấn Enter",
             )
             st.session_state.cfg_rounds = c_v2.number_input("Max Tool Rounds", 1, 8, int(st.session_state.cfg_rounds))
-            st.session_state.cfg_history = st.slider(
-                "Cửa sổ nhớ ngữ cảnh (History Window)",
-                min_value=1,
-                max_value=10,
-                value=int(st.session_state.cfg_history),
-            )
             st.divider()
             st.caption(f"**Artifact Version:** `{artifact_ver.artifact_version}`")
             if st.session_state.transcript_path:

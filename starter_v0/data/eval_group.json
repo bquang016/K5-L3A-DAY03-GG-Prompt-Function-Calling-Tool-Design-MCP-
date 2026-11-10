@@ -1,47 +1,13 @@
 {
-  "dataset_id": "day04_v2_research_group",
+  "dataset_id": "day03_group_eval",
   "dataset_role": "group",
-  "description": "Case do nhóm tự viết thêm (5 single-turn, 5 multi-turn), có kiểm tra tool mới domain_summary, boundary action send, query filtering, và multi-turn correction.",
-  "allowed_failure_types": [
-    "wrong_tool",
-    "wrong_arg_value",
-    "wrong_boundary",
-    "unnecessary_tool",
-    "out_of_scope",
-    "missing_info"
-  ],
+  "description": "Eval của nhóm: 5 single-turn + 5 multi-turn, bao phủ tool mới (domain_summary) và các lỗi quan sát được ở v0 (đoán mò thay vì clarify, gửi không xác nhận, query thừa chữ, nhiễm ngữ cảnh đa lượt).",
   "cases": [
     {
-      "id": "G01_domain_summary_routing",
+      "id": "G01_missing_handle_pronoun",
       "phase": "B",
       "suite": "group",
-      "query": "Thống kê số lượng URL theo từng tên miền từ danh sách sau: https://openai.com/research, https://google.com/search, https://openai.com/blog",
-      "failure_type": "wrong_tool",
-      "expect": {
-        "tool_calls": [
-          {
-            "name": "domain_summary",
-            "args": {
-              "urls": [
-                "https://openai.com/research",
-                "https://google.com/search",
-                "https://openai.com/blog"
-              ]
-            }
-          }
-        ]
-      },
-      "metadata": {
-        "skill": "routing_domain_summary",
-        "difficulty": "easy",
-        "what_it_tests": "Người dùng cung cấp danh sách URL và yêu cầu đếm theo tên miền -> gọi domain_summary"
-      }
-    },
-    {
-      "id": "G02_domain_summary_missing_urls",
-      "phase": "B",
-      "suite": "group",
-      "query": "Hãy đếm số lượng URL theo từng tên miền giúp mình",
+      "query": "Xem giúp mình mấy bài đăng gần đây của anh ấy",
       "failure_type": "missing_info",
       "expect": {
         "tool_calls": [
@@ -54,136 +20,116 @@
         ]
       },
       "metadata": {
-        "skill": "clarify_domain_summary",
+        "skill": "clarify_pronoun_no_antecedent",
         "difficulty": "medium",
-        "what_it_tests": "Yêu cầu đếm domain nhưng thiếu danh sách URL -> phải gọi clarify hỏi lại người dùng"
+        "what_it_tests": "Chỉ nói 'anh ấy' mà không nêu tên/handle → phải clarify hỏi là ai, KHÔNG đoán một tài khoản (lỗi v0 ở R10)."
       }
     },
     {
-      "id": "G03_social_search_latest",
+      "id": "G02_confirm_send_with_text",
       "phase": "B",
       "suite": "group",
-      "query": "Tìm các bài đăng mới nhất trên mạng xã hội về DeepSeek",
-      "failure_type": "wrong_arg_value",
+      "query": "Đăng giúp mình lên Telegram nội dung này: 'Họp team lúc 15h chiều nay'",
+      "failure_type": "wrong_boundary",
       "expect": {
         "tool_calls": [
           {
-            "name": "social_search",
+            "name": "clarify",
             "args": {
-              "query": "DeepSeek",
-              "search_type": "Latest"
+              "response_type": "yes_no"
             }
           }
         ]
       },
       "metadata": {
-        "skill": "arg_search_type_latest",
+        "skill": "confirm_before_write_with_content",
         "difficulty": "medium",
-        "what_it_tests": "Tìm kiếm mạng xã hội với từ khóa DeepSeek và sắp xếp Latest"
+        "what_it_tests": "Người dùng đã đưa sẵn nội dung nhưng chưa xác nhận gửi → phải hỏi yes_no trước, KHÔNG gọi send(confirmed=true) ngay (lỗi v0 ở R12)."
       }
     },
     {
-      "id": "G04_policy_internal_routing",
+      "id": "G03_news_month_short_query",
       "phase": "B",
       "suite": "group",
-      "query": "Công ty có quy định gì về việc trích dẫn nguồn khi làm nghiên cứu AI không?",
-      "failure_type": "wrong_tool",
-      "expect": {
-        "tool_calls": [
-          {
-            "name": "policy",
-            "args": {
-              "policy_area": "source_citation"
-            }
-          }
-        ]
-      },
-      "metadata": {
-        "skill": "routing_policy_citation",
-        "difficulty": "medium",
-        "what_it_tests": "Hỏi về chính sách trích dẫn nội bộ của công ty -> gọi policy(policy_area='source_citation')"
-      }
-    },
-    {
-      "id": "G05_out_of_scope_cooking",
-      "phase": "B",
-      "suite": "group",
-      "query": "Cho tôi công thức nấu món phở bò Hà Nội truyền thống",
-      "failure_type": "out_of_scope",
-      "expect": {
-        "no_tool": true
-      },
-      "metadata": {
-        "skill": "out_of_scope_rejection",
-        "difficulty": "easy",
-        "what_it_tests": "Yêu cầu ngoài phạm vi công cụ nghiên cứu (nấu ăn) -> không gọi tool"
-      }
-    },
-    {
-      "id": "G06_multiturn_clarify_then_domain_summary",
-      "phase": "B",
-      "suite": "group",
-      "turns": [
-        {"role": "user", "content": "Thống kê domain từ danh sách URL"},
-        {"role": "user", "content": "https://vnexpress.net/thoi-su, https://dantri.com.vn/xa-hoi, https://vnexpress.net/the-thao"},
-        {"role": "user", "content": "Đếm số lượng URL theo từng domain từ các link trên nhé"}
-      ],
-      "failure_type": "missing_info",
-      "expect": {
-        "tool_calls": [
-          {
-            "name": "domain_summary",
-            "args": {
-              "urls": [
-                "https://vnexpress.net/thoi-su",
-                "https://dantri.com.vn/xa-hoi",
-                "https://vnexpress.net/the-thao"
-              ]
-            }
-          }
-        ]
-      },
-      "metadata": {
-        "skill": "multiturn_domain_summary",
-        "difficulty": "hard",
-        "what_it_tests": "3 turns: ban đầu thiếu URL, lượt sau bổ sung URL -> gọi domain_summary"
-      }
-    },
-    {
-      "id": "G07_multiturn_correction_timeframe",
-      "phase": "B",
-      "suite": "group",
-      "turns": [
-        {"role": "user", "content": "Tin tức AI mới nhất trong ngày hôm nay"},
-        {"role": "user", "content": "Đổi lại cho mình thành trong tuần này nhé"},
-        {"role": "user", "content": "Vẫn tìm tin tức AI như cũ"}
-      ],
+      "query": "Tìm tin tức về Nvidia trong tháng này",
       "failure_type": "wrong_arg_value",
       "expect": {
         "tool_calls": [
           {
             "name": "lookup",
             "args": {
-              "query": "AI",
+              "query": "Nvidia",
               "topic": "news",
-              "timeframe": "week"
+              "timeframe": "month"
             }
           }
         ]
       },
       "metadata": {
-        "skill": "multiturn_timeframe_correction",
+        "skill": "arg_timeframe_month_concise_query",
         "difficulty": "medium",
-        "what_it_tests": "Sửa timeframe từ day sang week trong chuỗi hội thoại"
+        "what_it_tests": "'trong tháng này' → timeframe=month, tin tức → topic=news, query chỉ là từ khoá 'Nvidia' (không thêm 'news'/'tháng này') (lỗi query dư ở v0: R03, R13)."
       }
     },
     {
-      "id": "G08_multiturn_clarify_confirm_send",
+      "id": "G04_domain_summary_count",
+      "phase": "B",
+      "suite": "group",
+      "query": "Thống kê số lượng URL theo từng tên miền giúp mình từ danh sách này: https://vnexpress.net/ai-1, https://www.vnexpress.net/ai-2, https://dantri.com.vn/tech",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://vnexpress.net/ai-1",
+                "https://www.vnexpress.net/ai-2",
+                "https://dantri.com.vn/tech"
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "new_tool_domain_summary_single",
+        "difficulty": "easy",
+        "what_it_tests": "Người dùng đưa danh sách URL và yêu cầu thống kê theo tên miền → phải gọi đúng tool mới domain_summary với danh sách urls."
+      }
+    },
+    {
+      "id": "G05_thanks_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "query": "Cảm ơn bạn nhé, mình hiểu rồi",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "no_tool_chitchat",
+        "difficulty": "easy",
+        "what_it_tests": "Câu cảm ơn/xã giao không cần tra cứu → trả lời ngắn, KHÔNG gọi tool nào."
+      }
+    },
+    {
+      "id": "GM01_confirm_then_send",
       "phase": "B",
       "suite": "group",
       "turns": [
-        {"role": "user", "content": "Đăng bản tin tổng hợp AI lên Telegram giúp mình nhé"},
-        {"role": "user", "content": "Đồng ý, bạn gửi luôn đi"}
+        {
+          "role": "user",
+          "content": "Đăng bản tin AI hôm nay lên Telegram giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Nội dung: 'AI hôm nay: không có tin lớn'"
+        },
+        {
+          "role": "user",
+          "content": "Ok, gửi đi"
+        }
       ],
       "failure_type": "wrong_boundary",
       "expect": {
@@ -197,45 +143,64 @@
         ]
       },
       "metadata": {
-        "skill": "multiturn_confirm_send",
+        "skill": "multiturn_confirmed_send",
         "difficulty": "hard",
-        "what_it_tests": "Sau khi user đã xác nhận 'Đồng ý' ở lượt 2 -> gọi send với confirmed=true"
+        "what_it_tests": "3 turns: yêu cầu đăng → đưa nội dung → 'ok gửi đi' (xác nhận rõ ràng) → gọi send với confirmed=true. Kiểm tra agent KHÔNG hỏi lại vô hạn khi người dùng đã xác nhận."
       }
     },
     {
-      "id": "G09_multiturn_switch_account",
+      "id": "GM02_clarify_name_to_handle",
       "phase": "B",
       "suite": "group",
       "turns": [
-        {"role": "user", "content": "Cho xem tweet mới nhất của Elon Musk"},
-        {"role": "user", "content": "Không xem Elon Musk nữa, đổi sang Sam Altman đi"},
-        {"role": "user", "content": "Lấy 5 tweet gần đây nhất nhé"}
+        {
+          "role": "user",
+          "content": "Cho mình xem tweet gần đây"
+        },
+        {
+          "role": "user",
+          "content": "Của Yann LeCun"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 7 cái thôi"
+        }
       ],
-      "failure_type": "wrong_arg_value",
+      "failure_type": "missing_info",
       "expect": {
         "tool_calls": [
           {
             "name": "timeline",
             "args": {
-              "screenname": "sama",
-              "limit": 5
+              "screenname": "ylecun",
+              "limit": 7
             }
           }
         ]
       },
       "metadata": {
-        "skill": "multiturn_switch_user",
+        "skill": "multiturn_clarify_fill_name_mapping",
         "difficulty": "hard",
-        "what_it_tests": "Chuyển tài khoản từ Elon Musk sang Sam Altman -> gọi timeline(screenname='sama', limit=5)"
+        "what_it_tests": "3 turns: thiếu người → lượt 2 cho tên Yann LeCun → map thành handle ylecun, lượt 3 chốt limit=7."
       }
     },
     {
-      "id": "G10_multiturn_domain_summary_filter",
+      "id": "GM03_multiturn_domain_summary",
       "phase": "B",
       "suite": "group",
       "turns": [
-        {"role": "user", "content": "Mình có các link sau: https://github.com/torvalds/linux, https://google.com, https://github.com/python/cpython"},
-        {"role": "user", "content": "Thống kê cho mình số lượng link theo từng tên miền website từ các link trên"}
+        {
+          "role": "user",
+          "content": "Mình có 2 link bài viết này: https://reuters.com/tech/ai-1 và https://cnbc.com/2026/ai-chip"
+        },
+        {
+          "role": "user",
+          "content": "Thêm cả link này nữa nhé: https://www.reuters.com/markets/us"
+        },
+        {
+          "role": "user",
+          "content": "Đếm số lượng URL theo từng tên miền trong tất cả các link mình vừa đưa"
+        }
       ],
       "failure_type": "wrong_tool",
       "expect": {
@@ -244,18 +209,84 @@
             "name": "domain_summary",
             "args": {
               "urls": [
-                "https://github.com/torvalds/linux",
-                "https://google.com",
-                "https://github.com/python/cpython"
+                "https://reuters.com/tech/ai-1",
+                "https://cnbc.com/2026/ai-chip",
+                "https://www.reuters.com/markets/us"
               ]
             }
           }
         ]
       },
       "metadata": {
-        "skill": "multiturn_domain_summary_carry",
-        "difficulty": "medium",
-        "what_it_tests": "Lấy danh sách link từ lượt trước và gọi domain_summary ở lượt sau"
+        "skill": "multiturn_new_tool_domain_summary",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: người dùng cung cấp URL rải rác qua 2 lượt đầu, lượt 3 yêu cầu thống kê theo tên miền → phải gom đủ 3 URL và gọi domain_summary."
+      }
+    },
+    {
+      "id": "GM04_correct_timeframe_day_to_month",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin về Tesla hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "À thôi, lấy tin trong tháng này"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ về Tesla"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Tesla",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_timeframe_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: ban đầu 'hôm nay' → sửa thành 'trong tháng này' → timeframe=month (không giữ day), query chỉ 'Tesla' (lỗi nhiễm ngữ cảnh ở v0: M02)."
+      }
+    },
+    {
+      "id": "GM05_out_of_scope_after_research",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn, xong rồi"
+        },
+        {
+          "role": "user",
+          "content": "Giờ viết giúp mình hàm Python đảo ngược một chuỗi"
+        }
+      ],
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "multiturn_out_of_scope_latest_turn",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: lượt 1 là câu research nhưng lượt cuối yêu cầu viết code → chỉ xử lý lượt cuối, KHÔNG gọi lại lookup, từ chối/định hướng."
       }
     }
   ]
