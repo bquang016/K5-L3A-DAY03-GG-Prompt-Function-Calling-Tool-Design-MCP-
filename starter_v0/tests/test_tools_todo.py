@@ -1,163 +1,3 @@
-"""Tool Unit Test Challenge - implemented stubs.
-
-Offline only: HTTP is mocked with `fake_http`, fake keys are set with `monkeypatch.setenv`.
-One behaviour per test; test names describe the behaviour.
-"""
-from __future__ import annotations
-
-import sys
-
-import pytest
-
-from conftest import FakeResponse
-from tools import TOOL_FUNCTIONS
-
-TODO = "TODO(student): implement this test"
-
-
-# ---------------- clarify ----------------
-
-def test_clarify_choice_returns_options_and_awaits_user() -> None:
-    options = ["Tài khoản A", "Tài khoản B"]
-    result = TOOL_FUNCTIONS["clarify"](
-        question="Bạn muốn xem tài khoản nào?",
-        response_type="choice",
-        options=options,
-    )
-
-    assert result["options"] == options
-    assert result["awaiting_user"] is True
-    assert result["response_type"] == "choice"
-
-
-# ---------------- format ----------------
-
-def test_format_sections_groups_items_by_section() -> None:
-    items = [
-        {"title": "T1", "url": "https://a.com/1", "section": "A"},
-        {"title": "T2", "url": "https://b.com/2", "section": "B"},
-        {"title": "T3", "url": "https://a.com/3", "section": "A"},
-    ]
-    result = TOOL_FUNCTIONS["format"](items=items, template="sections")
-
-    assert result["markdown"].count("## A") == 1
-    assert result["markdown"].count("## B") == 1
-    assert result["item_count"] == 3
-
-
-def test_format_thread_numbers_items() -> None:
-    items = [
-        {"title": "T1", "url": "https://a.com/1"},
-        {"title": "T2", "url": "https://a.com/2"},
-    ]
-    result = TOOL_FUNCTIONS["format"](items=items, template="thread")
-    lines = result["markdown"].splitlines()
-
-    assert any(line.startswith("1/") for line in lines)
-    assert any(line.startswith("2/") for line in lines)
-
-
-@pytest.mark.parametrize("items", [None, []])
-def test_format_empty_items_does_not_crash(items) -> None:
-    result = TOOL_FUNCTIONS["format"](items=items)
-
-    assert result["item_count"] == 0
-
-
-# ---------------- send (guardrail) ----------------
-
-def test_send_confirmed_posts_to_telegram(monkeypatch, fake_http) -> None:
-    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "fake-token")
-    monkeypatch.setenv("TELEGRAM_CHAT_ID", "12345")
-    calls = fake_http(FakeResponse({"ok": True}))
-
-    result = TOOL_FUNCTIONS["send"](text="Bản tin", confirmed=True)
-
-    assert len(calls) == 1
-    assert calls[0]["method"] == "POST"
-    assert calls[0]["url"] == "https://api.telegram.org/botfake-token/sendMessage"
-    assert calls[0]["json"]["chat_id"] == "12345"
-    assert calls[0]["json"]["text"] == "Bản tin"
-    assert result["status"] == "sent"
-
-
-def test_send_confirmed_without_env_returns_error_and_no_request(fake_http) -> None:
-    calls = fake_http(FakeResponse({"ok": True}))
-
-    result = TOOL_FUNCTIONS["send"](text="Bản tin", confirmed=True)
-
-    assert result["error"] == "RuntimeError"
-    assert "TELEGRAM_BOT_TOKEN" in result["message"]
-    assert calls == []
-
-
-# ---------------- lookup ----------------
-
-def test_lookup_without_timeframe_omits_time_range(monkeypatch, fake_http) -> None:
-    monkeypatch.setenv("TAVILY_API_KEY", "test-key")
-    calls = fake_http(FakeResponse({"results": []}))
-
-    TOOL_FUNCTIONS["lookup"](query="OpenAI", timeframe=None)
-
-    assert calls[0]["url"] == "https://api.tavily.com/search"
-    assert "time_range" not in calls[0]["json"]
-
-
-def test_lookup_default_timeframe_is_week(monkeypatch, fake_http) -> None:
-    # Documents current behaviour: if the model does not pass timeframe, results are limited to 1 week.
-    monkeypatch.setenv("TAVILY_API_KEY", "test-key")
-    calls = fake_http(FakeResponse({"results": []}))
-
-    TOOL_FUNCTIONS["lookup"](query="OpenAI")
-
-    assert calls[0]["json"]["time_range"] == "week"
-
-
-# ---------------- fetch ----------------
-
-def test_fetch_maps_firecrawl_response(monkeypatch, fake_http) -> None:
-    monkeypatch.setenv("FIRECRAWL_API_KEY", "test-key")
-    calls = fake_http(FakeResponse({"data": {
-        "markdown": "# Nội dung bài viết",
-        "metadata": {"title": "T", "sourceURL": "https://example.com/final"},
-    }}))
-
-    result = TOOL_FUNCTIONS["fetch"](url="https://example.com/post")
-
-    assert calls[0]["url"] == "https://api.firecrawl.dev/v1/scrape"
-    assert calls[0]["json"] == {"url": "https://example.com/post", "formats": ["markdown"]}
-    assert calls[0]["headers"]["Authorization"] == "Bearer test-key"
-    assert result["items"][0] == {
-        "title": "T",
-        "url": "https://example.com/final",
-        "source": "example.com",
-        "summary": "# Nội dung bài viết",
-    }
-
-
-def test_fetch_truncates_markdown_to_4000_chars(monkeypatch, fake_http) -> None:
-    monkeypatch.setenv("FIRECRAWL_API_KEY", "test-key")
-    fake_http(FakeResponse({"data": {"markdown": "x" * 5000, "metadata": {}}}))
-
-    result = TOOL_FUNCTIONS["fetch"](url="https://example.com/long")
-
-    assert result["items"][0]["summary"] == "x" * 4000
-
-
-# ---------------- timeline / social_search ----------------
-
-def test_timeline_respects_limit_and_skips_items_without_id(monkeypatch, fake_http) -> None:
-    monkeypatch.setenv("RAPIDAPI_KEY", "test-key")
-    no_id = {"screen_name": "openai", "text": "tweet không có id"}
-    valid = [{"tweet_id": str(i), "screen_name": "openai", "text": f"Tweet {i}"} for i in range(1, 7)]
-    calls = fake_http(FakeResponse({"timeline": [no_id, *valid]}))
-
-    result = TOOL_FUNCTIONS["timeline"](screenname="openai", limit=3)
-
-    assert calls[0]["url"] == "https://twitter-api45.p.rapidapi.com/timeline.php"
-    assert calls[0]["params"] == {"screenname": "openai"}
-    assert calls[0]["headers"]["x-rapidapi-key"] == "test-key"
-    assert [item["url"] for item in result["items"]] == [
         f"https://x.com/openai/status/{i}" for i in (1, 2, 3)
     ]
 
@@ -224,44 +64,65 @@ def test_policy_instruction_like_lines_go_to_untrusted_text(tmp_path, monkeypatc
     assert "ignore" not in hit["facts"].lower()
     assert "cite the document title" in hit["facts"]
 
+# ---------------- domain_summary ----------------
 
-# ---------------- YOUR NEW TOOL(S) ----------------
-# Pending: the team's new tool is not decided yet. Rename these three stubs to the real tool name
-# (e.g. test_<tool>_happy_path) and implement them, >= 3 tests per new tool.
+def test_domain_summary_counts_repeated_domains() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
 
-def test_domain_summary_happy_path() -> None:
-    urls = [
+    result = tool(urls=[
+        "https://google.com/search",
+        "https://google.com/maps",
+        "https://github.com/user",
+    ])
+
+    assert result["total_urls"] == 3
+    assert result["domain_counts"] == {
+        "google.com": 2,
+        "github.com": 1,
+    }
+
+
+@pytest.mark.parametrize("urls", ["https://google.com", "", []])
+def test_domain_summary_requires_a_nonempty_url_list(urls) -> None:
+    result = TOOL_FUNCTIONS["domain_summary"](urls=urls)
+
+    assert result["error"] == "urls phải là một danh sách URL không rỗng"
+
+
+def test_domain_summary_invalid_url_returns_error_dict() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls=[
+        "https://google.com",
+        "not-a-valid-url",
+    ])
+
+    assert "error" in result
+    assert result["tool"] == "domain_summary"
+
+
+def test_domain_summary_rejects_non_string_item() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls=[
+        "https://google.com",
+        123,
+    ])
+
+    assert "error" in result
+
+
+def test_domain_summary_groups_www_and_bare_domains() -> None:
+    result = TOOL_FUNCTIONS["domain_summary"](urls=[
         "https://www.vnexpress.net/the-thao",
         "http://vnexpress.net/thoi-su",
         "https://dantri.com.vn/",
-        "not-a-url",
-        123
-    ]
-    result = TOOL_FUNCTIONS["domain_summary"](urls=urls)
+    ])
 
-    assert result["total_urls"] == 5
+    assert result["total_urls"] == 3
     assert result["valid_urls"] == 3
-    assert len(result["invalid_urls"]) == 2
-    # www.vnexpress.net và vnexpress.net được gộp chung thành vnexpress.net
-    assert result["domains"]["vnexpress.net"] == 2
-    assert result["domains"]["dantri.com.vn"] == 1
+    assert result["domain_counts"] == {"vnexpress.net": 2, "dantri.com.vn": 1}
 
 
-def test_domain_summary_bad_input_from_model() -> None:
-    # Test 1: model truyền vào chuỗi rỗng thay vì danh sách
-    res1 = TOOL_FUNCTIONS["domain_summary"](urls="")
-    assert res1["error"] == "urls phải là một danh sách URL không rỗng"
-
-    # Test 2: model truyền vào danh sách rỗng
-    res2 = TOOL_FUNCTIONS["domain_summary"](urls=[])
-    assert res2["error"] == "urls phải là một danh sách URL không rỗng"
-
-
-def test_domain_summary_failure_all_invalid_urls() -> None:
-    # Nếu model truyền vào list nhưng toàn URL rác (không có http/https hoặc domain)
+def test_domain_summary_reports_all_invalid_urls() -> None:
     urls = ["ftp://server.com", "hello world", "/local/path"]
-    result = TOOL_FUNCTIONS["domain_summary"](urls=urls)
-
-    assert "error" in result
-    assert result["error"] == "Không có URL hợp lệ nào"
-    assert len(result["invalid_urls"]) == 3

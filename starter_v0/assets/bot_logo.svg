@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="55%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="visorGrad" x1="16" y1="26" x2="48" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer sharp rounded square badge (rx=10 for 64px scale ~ 4px at 24px) -->
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="url(#bgGrad)" stroke="#3B82F6" stroke-width="2"/>
+  <!-- Top antenna / signal node -->
+  <path d="M32 11V17" stroke="#60A5FA" stroke-width="3" stroke-linecap="square"/>
+  <rect x="29" y="8" width="6" height="4" rx="1" fill="#38BDF8"/>
+  <!-- Robot head chassis -->
+  <rect x="14" y="17" width="36" height="30" rx="5" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1.5"/>
+  <!-- Side ear transceivers -->
+  <rect x="9" y="26" width="4" height="12" rx="1" fill="#38BDF8"/>
+  <rect x="51" y="26" width="4" height="12" rx="1" fill="#38BDF8"/>
+  <!-- Visor screen -->
+  <rect x="19" y="23" width="26" height="12" rx="3" fill="#0F172A"/>
+  <!-- Glowing digital eyes -->
+  <rect x="23" y="26.5" width="6" height="5" rx="1" fill="url(#visorGrad)"/>
+  <rect x="35" y="26.5" width="6" height="5" rx="1" fill="url(#visorGrad)"/>
+  <!-- Audio / status bars on mouth -->
+  <rect x="24" y="40" width="4" height="2.5" rx="0.5" fill="#2563EB"/>
+  <rect x="30" y="39" width="4" height="4.5" rx="0.5" fill="#2563EB"/>
+  <rect x="36" y="40" width="4" height="2.5" rx="0.5" fill="#2563EB"/>
+</svg>
