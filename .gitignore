@@ -22,3 +22,9 @@ arxiv_papers/
 Thumbs.db
 .idea/
 .vscode/
+
+# Cloudflare Tunnel binaries & temp logs
+cloudflared.exe
+*.exe
+tunnel.log
+tunnel_url.txt
