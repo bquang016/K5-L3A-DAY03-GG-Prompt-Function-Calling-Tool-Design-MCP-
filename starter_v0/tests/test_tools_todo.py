@@ -110,13 +110,52 @@ def test_policy_instruction_like_lines_go_to_untrusted_text() -> None:
 #   2. bad / missing input from the model (empty string, wrong type, out-of-enum value)
 #   3. failure path (missing key, HTTP error, timeout) -> returns error dict, does not raise
 
-def test_my_new_tool_happy_path() -> None:
-    pytest.skip(TODO)
+
+# ---------------- domain_summary ----------------
+
+def test_domain_summary_counts_repeated_domains() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls=[
+        "https://google.com/search",
+        "https://google.com/maps",
+        "https://github.com/user",
+    ])
+
+    assert result["total_urls"] == 3
+    assert result["domain_counts"] == {
+        "google.com": 2,
+        "github.com": 1,
+    }
 
 
-def test_my_new_tool_bad_input_from_model() -> None:
-    pytest.skip(TODO)
+def test_domain_summary_rejects_wrong_input_type() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls="https://google.com")
+
+    assert "error" in result
 
 
-def test_my_new_tool_failure_returns_error_dict() -> None:
-    pytest.skip(TODO)
+def test_domain_summary_invalid_url_returns_error_dict() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls=[
+        "https://google.com",
+        "not-a-valid-url",
+    ])
+
+    assert "error" in result
+    assert result["tool"] == "domain_summary"
+
+
+def test_domain_summary_rejects_non_string_item() -> None:
+    tool = TOOL_FUNCTIONS["domain_summary"]
+
+    result = tool(urls=[
+        "https://google.com",
+        123,
+    ])
+
+    assert "error" in result
+
