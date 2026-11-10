@@ -18,11 +18,16 @@
 
 Research Agent đa năng chuyên sâu: Tự động tra cứu tin tức thời sự trên web internet qua Tavily, tìm kiếm và trích xuất tweet từ mạng xã hội X/Twitter, đọc toàn văn nội dung trang web từ link URL qua Firecrawl, phân tích và thống kê số lượng nguồn theo từng tên miền website (`domain_summary`), tra cứu chính sách công ty nội bộ và bài báo khoa học arXiv, định dạng bản tin digest Markdown và có cơ chế bảo vệ (guardrail) bắt buộc xác nhận của người dùng trước khi gửi tin lên kênh Telegram.
 
+Agent được trang bị 2 hình thức giao diện trực quan:
+1. **Web App Streamlit (`app.py`)**: Giao diện Studio đầy đủ tính năng, badges trạng thái thời gian thực, log gọi tool chi tiết.
+2. **Chrome Extension (Sider Mode)**: Thanh công cụ tiện ích mở rộng gắn trực tiếp vào Side Panel của trình duyệt Chrome (`chrome_extension/`), cho phép người dùng tra cứu song song trong lúc duyệt bất kỳ trang web nào mà không cần chuyển tab.
+
 **Link dùng thử (deploy):**
 
 > Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README: `cloudflared tunnel --url http://localhost:8501`.
 >
-> URL: http://localhost:8501 (hoặc link Cloudflare Tunnel khi expose)
+> - **Web UI:** http://localhost:8501 (hoặc link Cloudflare Tunnel khi expose)
+> - **Chrome Extension:** Cài đặt từ thư mục `chrome_extension/` vào Chrome (`chrome://extensions` -> Load unpacked).
 
 ## A2. Tool agent có
 
@@ -116,5 +121,6 @@ Only fill if your team did bonus.
 |---|---|---|---|
 | send (Telegram) | `tests/test_tools_todo.py`, `data/eval_group.json` (G02, GM01) | Bắt buộc xin xác nhận trước khi thực hiện hành động ghi (write action), chỉ gửi khi `confirmed=true` | Tránh việc agent tự ý gửi tin rác hoặc nội dung chưa được kiểm duyệt lên kênh Telegram. |
 | arXiv/company policy | `tests/test_tools_todo.py` | Lọc dữ liệu độc hại vào `untrusted_text`, phân tách rõ ràng với dữ liệu tin cậy (`facts`) | Chống prompt injection từ tài liệu bên ngoài hoặc văn bản chính sách chưa được xác thực. |
-| UI | `app.py`, `transcripts/*.transcript.json` | Giao diện Streamlit hiện đại, realtime badge, fallback Gemini thông minh, hiển thị tiến trình gọi tool trực quan | Cung cấp link trực quan để người dùng và các team khác trải nghiệm trực tiếp. |
+| UI (Streamlit Studio) | `app.py`, `transcripts/*.transcript.json` | Giao diện Streamlit hiện đại, realtime badge, fallback Gemini thông minh, hiển thị tiến trình gọi tool trực quan | Cung cấp link trực quan để người dùng và các team khác trải nghiệm trực tiếp. |
+| UI (Chrome Extension - Sider Mode) | `chrome_extension/manifest.json`, `chrome_extension/sidepanel.html`, `chrome_extension/background.js` | Tiện ích mở rộng Chrome Manifest V3 mở Research Agent ở Side Panel trên mọi tab duyệt web, nhúng app trực tiếp, hỗ trợ tra cứu song song không cần đổi tab | Quản lý tải tài nguyên trong iframe và xử lý layout co giãn trong khung hẹp của side panel. |
 | Tool unit tests (`tests/`) | `pytest tests/ -v` (92 passed) | Toàn bộ 92 tests đều xanh 100% (0 fail, 0 skip), bao gồm contract tests, test cho tool mới `domain_summary` | Đảm bảo tính nhất quán tuyệt đối giữa mã nguồn, schema `tools.yaml` và dữ liệu đánh giá. |
