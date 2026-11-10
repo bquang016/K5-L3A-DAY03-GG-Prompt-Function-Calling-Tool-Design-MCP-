@@ -229,13 +229,39 @@ def test_policy_instruction_like_lines_go_to_untrusted_text(tmp_path, monkeypatc
 # Pending: the team's new tool is not decided yet. Rename these three stubs to the real tool name
 # (e.g. test_<tool>_happy_path) and implement them, >= 3 tests per new tool.
 
-def test_my_new_tool_happy_path() -> None:
-    pytest.skip(TODO)
+def test_domain_summary_happy_path() -> None:
+    urls = [
+        "https://www.vnexpress.net/the-thao",
+        "http://vnexpress.net/thoi-su",
+        "https://dantri.com.vn/",
+        "not-a-url",
+        123
+    ]
+    result = TOOL_FUNCTIONS["domain_summary"](urls=urls)
+
+    assert result["total_urls"] == 5
+    assert result["valid_urls"] == 3
+    assert len(result["invalid_urls"]) == 2
+    # www.vnexpress.net và vnexpress.net được gộp chung thành vnexpress.net
+    assert result["domains"]["vnexpress.net"] == 2
+    assert result["domains"]["dantri.com.vn"] == 1
 
 
-def test_my_new_tool_bad_input_from_model() -> None:
-    pytest.skip(TODO)
+def test_domain_summary_bad_input_from_model() -> None:
+    # Test 1: model truyền vào chuỗi rỗng thay vì danh sách
+    res1 = TOOL_FUNCTIONS["domain_summary"](urls="")
+    assert res1["error"] == "urls phải là một danh sách URL không rỗng"
+
+    # Test 2: model truyền vào danh sách rỗng
+    res2 = TOOL_FUNCTIONS["domain_summary"](urls=[])
+    assert res2["error"] == "urls phải là một danh sách URL không rỗng"
 
 
-def test_my_new_tool_failure_returns_error_dict() -> None:
-    pytest.skip(TODO)
+def test_domain_summary_failure_all_invalid_urls() -> None:
+    # Nếu model truyền vào list nhưng toàn URL rác (không có http/https hoặc domain)
+    urls = ["ftp://server.com", "hello world", "/local/path"]
+    result = TOOL_FUNCTIONS["domain_summary"](urls=urls)
+
+    assert "error" in result
+    assert result["error"] == "Không có URL hợp lệ nào"
+    assert len(result["invalid_urls"]) == 3

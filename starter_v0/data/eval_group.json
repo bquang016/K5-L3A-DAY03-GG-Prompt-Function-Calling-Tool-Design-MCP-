@@ -1,7 +1,293 @@
 {
-  "dataset_id": "day04_v2_research_group",
+  "dataset_id": "day03_group_eval",
   "dataset_role": "group",
-  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
-  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "description": "Eval của nhóm: 5 single-turn + 5 multi-turn, bao phủ tool mới (domain_summary) và các lỗi quan sát được ở v0 (đoán mò thay vì clarify, gửi không xác nhận, query thừa chữ, nhiễm ngữ cảnh đa lượt).",
+  "cases": [
+    {
+      "id": "G01_missing_handle_pronoun",
+      "phase": "B",
+      "suite": "group",
+      "query": "Xem giúp mình mấy bài đăng gần đây của anh ấy",
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "clarify_pronoun_no_antecedent",
+        "difficulty": "medium",
+        "what_it_tests": "Chỉ nói 'anh ấy' mà không nêu tên/handle → phải clarify hỏi là ai, KHÔNG đoán một tài khoản (lỗi v0 ở R10)."
+      }
+    },
+    {
+      "id": "G02_confirm_send_with_text",
+      "phase": "B",
+      "suite": "group",
+      "query": "Đăng giúp mình lên Telegram nội dung này: 'Họp team lúc 15h chiều nay'",
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "confirm_before_write_with_content",
+        "difficulty": "medium",
+        "what_it_tests": "Người dùng đã đưa sẵn nội dung nhưng chưa xác nhận gửi → phải hỏi yes_no trước, KHÔNG gọi send(confirmed=true) ngay (lỗi v0 ở R12)."
+      }
+    },
+    {
+      "id": "G03_news_month_short_query",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm tin tức về Nvidia trong tháng này",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Nvidia",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "arg_timeframe_month_concise_query",
+        "difficulty": "medium",
+        "what_it_tests": "'trong tháng này' → timeframe=month, tin tức → topic=news, query chỉ là từ khoá 'Nvidia' (không thêm 'news'/'tháng này') (lỗi query dư ở v0: R03, R13)."
+      }
+    },
+    {
+      "id": "G04_domain_summary_count",
+      "phase": "B",
+      "suite": "group",
+      "query": "Thống kê số lượng URL theo từng tên miền giúp mình từ danh sách này: https://vnexpress.net/ai-1, https://www.vnexpress.net/ai-2, https://dantri.com.vn/tech",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://vnexpress.net/ai-1",
+                "https://www.vnexpress.net/ai-2",
+                "https://dantri.com.vn/tech"
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "new_tool_domain_summary_single",
+        "difficulty": "easy",
+        "what_it_tests": "Người dùng đưa danh sách URL và yêu cầu thống kê theo tên miền → phải gọi đúng tool mới domain_summary với danh sách urls."
+      }
+    },
+    {
+      "id": "G05_thanks_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "query": "Cảm ơn bạn nhé, mình hiểu rồi",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "metadata": {
+        "skill": "no_tool_chitchat",
+        "difficulty": "easy",
+        "what_it_tests": "Câu cảm ơn/xã giao không cần tra cứu → trả lời ngắn, KHÔNG gọi tool nào."
+      }
+    },
+    {
+      "id": "GM01_confirm_then_send",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin AI hôm nay lên Telegram giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Nội dung: 'AI hôm nay: không có tin lớn'"
+        },
+        {
+          "role": "user",
+          "content": "Ok, gửi đi"
+        }
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_confirmed_send",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: yêu cầu đăng → đưa nội dung → 'ok gửi đi' (xác nhận rõ ràng) → gọi send với confirmed=true. Kiểm tra agent KHÔNG hỏi lại vô hạn khi người dùng đã xác nhận."
+      }
+    },
+    {
+      "id": "GM02_clarify_name_to_handle",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Cho mình xem tweet gần đây"
+        },
+        {
+          "role": "user",
+          "content": "Của Yann LeCun"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 7 cái thôi"
+        }
+      ],
+      "failure_type": "missing_info",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "ylecun",
+              "limit": 7
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_clarify_fill_name_mapping",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: thiếu người → lượt 2 cho tên Yann LeCun → map thành handle ylecun, lượt 3 chốt limit=7."
+      }
+    },
+    {
+      "id": "GM03_multiturn_domain_summary",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Mình có 2 link bài viết này: https://reuters.com/tech/ai-1 và https://cnbc.com/2026/ai-chip"
+        },
+        {
+          "role": "user",
+          "content": "Thêm cả link này nữa nhé: https://www.reuters.com/markets/us"
+        },
+        {
+          "role": "user",
+          "content": "Đếm số lượng URL theo từng tên miền trong tất cả các link mình vừa đưa"
+        }
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://reuters.com/tech/ai-1",
+                "https://cnbc.com/2026/ai-chip",
+                "https://www.reuters.com/markets/us"
+              ]
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_new_tool_domain_summary",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: người dùng cung cấp URL rải rác qua 2 lượt đầu, lượt 3 yêu cầu thống kê theo tên miền → phải gom đủ 3 URL và gọi domain_summary."
+      }
+    },
+    {
+      "id": "GM04_correct_timeframe_day_to_month",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin về Tesla hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "À thôi, lấy tin trong tháng này"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ về Tesla"
+        }
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Tesla",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "multiturn_timeframe_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: ban đầu 'hôm nay' → sửa thành 'trong tháng này' → timeframe=month (không giữ day), query chỉ 'Tesla' (lỗi nhiễm ngữ cảnh ở v0: M02)."
+      }
+    },
+    {
+      "id": "GM05_out_of_scope_after_research",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn, xong rồi"
+        },
+        {
+          "role": "user",
+          "content": "Giờ viết giúp mình hàm Python đảo ngược một chuỗi"
+        }
+      ],
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "metadata": {
+        "skill": "multiturn_out_of_scope_latest_turn",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: lượt 1 là câu research nhưng lượt cuối yêu cầu viết code → chỉ xử lý lượt cuối, KHÔNG gọi lại lookup, từ chối/định hướng."
+      }
+    }
+  ]
 }
