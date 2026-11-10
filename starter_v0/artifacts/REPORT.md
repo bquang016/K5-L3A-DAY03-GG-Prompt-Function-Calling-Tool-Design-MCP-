@@ -7,7 +7,11 @@
 ## Team
 
 - Team: Research Agent Studio Team
-- Members: Quang, Đạt, Đức, Hùng
+- Members:
+  - Bùi Đăng Quang - MSSV: 2A202603640
+  - Nguyễn Đức Trọng - MSSV: 2A202603644
+  - Trịnh Quốc Đạt - MSSV: 2A202603581
+  - Nguyễn Xuân Hùng - MSSV: 2A202603599
 - Provider/model: Gemini / `gemini-3.5-flash-lite`
 
 ---
@@ -24,10 +28,9 @@ Agent được trang bị 2 hình thức giao diện trực quan:
 
 **Link dùng thử (deploy):**
 
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README: `cloudflared tunnel --url http://localhost:8501`.
->
-> - **Web UI:** http://localhost:8501 (hoặc link Cloudflare Tunnel khi expose)
-> - **Chrome Extension:** Cài đặt từ thư mục `chrome_extension/` vào Chrome (`chrome://extensions` -> Load unpacked).
+- **Public Cloudflare Tunnel Link (Live Demo cho Showdown):** https://property-facts-expires-included.trycloudflare.com
+- **Local Web UI:** http://localhost:8501
+- **Chrome Extension (Sider Mode):** Cài đặt từ thư mục `chrome_extension/` vào Chrome (`chrome://extensions` -> Bật Developer Mode -> Load unpacked).
 
 ## A2. Tool agent có
 
