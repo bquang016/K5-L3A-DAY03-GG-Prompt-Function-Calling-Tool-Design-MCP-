@@ -37,3 +37,4 @@
   - Web UI Streamlit Studio (`app.py`).
   - **Chrome Extension Sider Mode (`chrome_extension/`):** Tiện ích mở rộng Side Panel Manifest V3 cho trình duyệt Chrome.
   - Tool Unit Tests: 92/92 tests xanh 100% trong `tests/test_tools_todo.py`.
+
