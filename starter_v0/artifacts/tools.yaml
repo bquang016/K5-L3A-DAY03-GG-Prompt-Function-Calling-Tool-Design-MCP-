@@ -197,3 +197,18 @@ tools:
           default: 8000
           description: "Giới hạn số lượng ký tự tối đa."
       required: [arxiv_url]
+  
+  - name: domain_summary
+    description: >
+      Count URLs grouped by domain from a provided list.
+      Use this tool when the user wants to summarize or count
+      URLs by domain. Does not fetch URLs or access external APIs.
+    parameters:
+      type: object
+      properties:
+        urls:
+          type: array
+          description: List of HTTP or HTTPS URLs to summarize.
+          items:
+            type: string
+      required: [urls]
