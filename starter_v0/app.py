@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import threading
 from contextlib import nullcontext
 from datetime import datetime
@@ -83,6 +84,7 @@ TOOL_META: dict[str, dict[str, str]] = {
     "policy": {"label": "Quy định Nội bộ", "svg": SVG_SHIELD, "desc": "Tra cứu tài liệu chính sách nội bộ công ty"},
     "papers": {"label": "Tìm bài báo arXiv", "svg": SVG_DOC, "desc": "Tìm kiếm bài báo khoa học trên hệ thống arXiv"},
     "paper_text": {"label": "Đọc PDF arXiv", "svg": SVG_DOC, "desc": "Tải file PDF arXiv và trích xuất toàn văn"},
+    "domain_summary": {"label": "Thống kê Tên miền", "svg": SVG_GLOBE, "desc": "Đếm và nhóm số lượng URL theo từng tên miền"},
     "send": {"label": "Gửi Telegram", "svg": SVG_SEND, "desc": "Đăng bản tin lên kênh Telegram (bắt buộc xác nhận)"},
 }
 
@@ -410,7 +412,7 @@ def init_session_state() -> None:
         "active_turn_num": None,
         "sider_tab": ":material/chat: Trò chuyện",
         "sider_save_error": None,
-        "cfg_provider": "openrouter",
+        "cfg_provider": "gemini" if os.getenv("GEMINI_API_KEY") and not os.getenv("OPENROUTER_API_KEY") else "openrouter",
         "cfg_model": "",
         "cfg_version": "v3",
         "cfg_history": 5,
