@@ -1,0 +1,305 @@
+{
+  "transcript_id": "v3_gemini_20261110T120359671668",
+  "version": "v3",
+  "artifact_version": "v3+p876040c16a28+tb74750c49704",
+  "prompt_hash": "876040c16a285bd1ffac5edbe67f22ff82ee753aeba57cd5b10f396849ae12fc",
+  "tools_hash": "b74750c4970410f952054b1f2ce43ed4e95f41aa5dc1d35145f6a3b20ecf9a71",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "system_prompt": "C:\\Users\\buida\\vinuni_day03_lab\\K5-L3A-DAY03-GG-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\buida\\vinuni_day03_lab\\K5-L3A-DAY03-GG-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T12:03:59",
+  "updated_at": "2026-11-10T12:03:59",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T12:03:50",
+      "user": "tin tức AI hôm nay có những gì",
+      "status": "answered",
+      "assistant_text": "# Tin tức AI nổi bật trong ngày\n\n## Việc làm và Kinh tế\n- [AI and your job: Threat or opportunity?](https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity) – **fox10tv.com**  \n  AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm trong lĩnh vực xây dựng, sản xuất trung tâm dữ liệu và sản xuất chip, đồng thời giúp nhân sự văn phòng có tay nghề cao tăng năng suất.\n\n## Giáo dục và Chính sách\n- [Google AI policy forces decision for San Diego schools – NBC 7 San Diego](https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437) – **nbcsandiego.com**  \n  Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi ích công nghệ và vấn đề kiểm soát quyền truy cập của học sinh.\n\n## Cơ sở hạ tầng và Trung tâm dữ liệu\n- [Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn](https://time.com/article/2026/11/10/permitting-bill-data-centers) – **time.com**  \n  Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là \"khoản ưu đãi lớn\" dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ.\n\n## An ninh và Quốc phòng\n- [Military-made AI tool helped thwart World Cup bomb threat - Federal News Network](https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat) – **federalnewsnetwork.com**  \n  Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles.\n\n## Quy định pháp lý và An toàn AI\n- [Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters](https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10) – **reuters.com**  \n  Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "query": "AI",
+                "timeframe": "day",
+                "topic": "news"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "query": "AI",
+                "timeframe": "day",
+                "topic": "news"
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "AI",
+                "topic": "news",
+                "timeframe": "day",
+                "items": [
+                  {
+                    "title": "AI and your job: Threat or opportunity?",
+                    "url": "https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity",
+                    "source": "fox10tv.com",
+                    "summary": "MOBILE, Ala. (WALA) - Artificial intelligence is becoming a bigger part of everyday life, raising questions about what the technology could mean for workers and their jobs.\n\nSome economists believe AI poses a particular threat to entry-level and repetitive work, including call center, data entry and junior copywriting jobs, according to The Wall Street Journal. Those tasks may be easier to automate. [...] But AI could also create opportunities. A Bloomberg article points to potential job growth in construction and manufacturing as companies build data centers and produce the chips that power the technology. Some higher-skilled office workers could also benefit if AI helps them become more productive. [...] The long-term impact on jobs remains unclear, but workers can take steps to prepare. Exploring AI chatbots, writing assistants and other tools may help people find ways to work more efficiently and develop skills that complement the technology.",
+                    "score": 0.42348245
+                  },
+                  {
+                    "title": "Google AI policy forces decision for San Diego schools – NBC 7 San Diego",
+                    "url": "https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437",
+                    "source": "nbcsandiego.com",
+                    "summary": "As districts consider their options, students are already seeing artificial intelligence become a more common part of everyday learning.\n\n“I feel like I see a lot of people using AI now,” said Delilah Ortiz, a student at El Camino High School.\n\nSome students believe the focus should be on establishing guidelines for AI use rather than banning the technology entirely. [...] San Diego County school districts face a January deadline to decide whether to opt in to Google's artificial intelligence features or lose access to the company's search engine, forcing educators to weigh the benefits of AI against concerns about student access to the technology. [...] Google plans to disable a range of AI-powered features, including Gemini, Gemini Notebook and Search in January to give school districts more control over the technology students can access. However, districts that want to continue using Google Search will have to opt in to the AI features.\n\nStream San Diego News for free, 24/7, wherever you are with NBC 7.\n\nWatch button  WATCH HERE",
+                    "score": 0.202917
+                  },
+                  {
+                    "title": "Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn",
+                    "url": "https://time.com/article/2026/11/10/permitting-bill-data-centers",
+                    "source": "time.com",
+                    "summary": "Personalized Content\n\n## Business\n\nFollow this section to personalize your feed and get instant alerts.\n\nWHY FOLLOW?\n\nUpdate your preferences in Account Settings\n\nPersonalized Content\n\n## AI\n\nFollow this tag to personalize your feed and get instant alerts.\n\nWHY FOLLOW?\n\nUpdate your preferences in Account Settings\n\n# Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn\n\nAndrew R. Chow\n\nPersonalized Content\n\nAndrew R. Chow\n\n## Andrew R. Chow [...] The bill’s advocates argue that its passage would serve as a rare bipartisan win and a victory for affordability. But critics, especially those on the left, are calling for Democrats to wait until the next Congress. “You just heard Americans demand much more of a say in a way that AI is shaping their lives,” says Michele Jawando, the CEO of Omidyar Network. “Whenever you try to ram something through in a lame duck Congress before you have a hundred new House members, that’s never a good look",
+                    "score": 0.19392508
+                  },
+                  {
+                    "title": "Military-made AI tool helped thwart World Cup bomb threat - Federal News Network",
+                    "url": "https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat",
+                    "source": "federalnewsnetwork.com",
+                    "summary": "The 2026 World Cup brought more than six million spectators from around the world to more than 100 matches in 16 host cities in the U.S., Canada and Mexico over the course of two months, prompting a massive interagency effort to secure those sites using technologies like AI and drones. Two people were charged in connection with another bomb threat against FIFA during a World Cup match at MetLife Stadium in New Jersey. [...] A military-made artificial intelligence tool helped law enforcement thwart a bomb threat at the FIFA World Cup in California this summer.\n\nThe previously undisclosed incident occurred June 18, when Switzerland faced Bosnia and Herzegovina at SoFi Stadium outside Los Angeles, Army Capt. Ryan Hetrick, who leads the Pentagon’s Generative AI Task Force, said Nov. 6 at an AI event in Washington. [...] Hetrick has become one of the military’s biggest — and busiest — evangelists for AI. The GenAI Task Force travels around the globe to sit down with troops on operations floors and in the field and find AI fixes for their most pressing problems.",
+                    "score": 0.19305643
+                  },
+                  {
+                    "title": "Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters",
+                    "url": "https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10",
+                    "source": "reuters.com",
+                    "summary": "However, both companies told Australian parliament last ​month that they would welcome ​laws requiring them to ⁠report data breaches carried out by their AI agents, acknowledging the decision to notify was currently at their discretion.\n\nAlbanese said his centre-left ​Labor government would set up an AI regulator to oversee security ​controls throughout ⁠the development and deployment of AI systems, identify serious risks and conduct independent evaluations of AI models. [...] \"The AI safety regulator will be able to enforce significant penalties for AI companies ⁠doing the ​wrong thing,\" he said.\n\nThe mandatory AI safety and ​security protections will form part of the government's proposed AI legislation, Albanese said, which it plans to introduce in ​Parliament next year.\n\nReporting by Renju Jose in Sydney; Editing by Christian Schmollinger and Saad Sayeed\n\nOur Standards: The Thomson Reuters Trust Principles. [...] OpenAI has said it learned of the breach only in August ​and that the incident was unintentional. Its review found no evidence that patient records were accessed by ‌the ⁠agent.\n\nThe breach has added to friction between Australia and US technology companies, after Canberra refused ChatGPT maker OpenAI and rival Anthropic exemptions from copyright laws for model training, instead requiring them to negotiate licensing agreements with Australian rights holders.",
+                    "score": 0.18111867
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "format",
+              "args": {
+                "headline": "Tin tức AI nổi bật trong ngày",
+                "items": [
+                  {
+                    "source": "fox10tv.com",
+                    "url": "https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity",
+                    "title": "AI and your job: Threat or opportunity?",
+                    "summary": "AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm trong lĩnh vực xây dựng, sản xuất trung tâm dữ liệu và sản xuất chip, đồng thời giúp nhân sự văn phòng có tay nghề cao tăng năng suất.",
+                    "section": "Việc làm và Kinh tế"
+                  },
+                  {
+                    "title": "Google AI policy forces decision for San Diego schools – NBC 7 San Diego",
+                    "summary": "Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi ích công nghệ và vấn đề kiểm soát quyền truy cập của học sinh.",
+                    "section": "Giáo dục và Chính sách",
+                    "url": "https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437",
+                    "source": "nbcsandiego.com"
+                  },
+                  {
+                    "title": "Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn",
+                    "source": "time.com",
+                    "summary": "Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là 'khoản ưu đãi lớn' dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ.",
+                    "url": "https://time.com/article/2026/11/10/permitting-bill-data-centers",
+                    "section": "Cơ sở hạ tầng và Trung tâm dữ liệu"
+                  },
+                  {
+                    "url": "https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat",
+                    "title": "Military-made AI tool helped thwart World Cup bomb threat - Federal News Network",
+                    "source": "federalnewsnetwork.com",
+                    "section": "An ninh và Quốc phòng",
+                    "summary": "Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles."
+                  },
+                  {
+                    "source": "reuters.com",
+                    "section": "Quy định pháp lý và An toàn AI",
+                    "summary": "Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới.",
+                    "title": "Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters",
+                    "url": "https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10"
+                  }
+                ],
+                "template": "sections"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "format",
+              "args": {
+                "headline": "Tin tức AI nổi bật trong ngày",
+                "items": [
+                  {
+                    "source": "fox10tv.com",
+                    "url": "https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity",
+                    "title": "AI and your job: Threat or opportunity?",
+                    "summary": "AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm trong lĩnh vực xây dựng, sản xuất trung tâm dữ liệu và sản xuất chip, đồng thời giúp nhân sự văn phòng có tay nghề cao tăng năng suất.",
+                    "section": "Việc làm và Kinh tế"
+                  },
+                  {
+                    "title": "Google AI policy forces decision for San Diego schools – NBC 7 San Diego",
+                    "summary": "Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi ích công nghệ và vấn đề kiểm soát quyền truy cập của học sinh.",
+                    "section": "Giáo dục và Chính sách",
+                    "url": "https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437",
+                    "source": "nbcsandiego.com"
+                  },
+                  {
+                    "title": "Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn",
+                    "source": "time.com",
+                    "summary": "Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là 'khoản ưu đãi lớn' dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ.",
+                    "url": "https://time.com/article/2026/11/10/permitting-bill-data-centers",
+                    "section": "Cơ sở hạ tầng và Trung tâm dữ liệu"
+                  },
+                  {
+                    "url": "https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat",
+                    "title": "Military-made AI tool helped thwart World Cup bomb threat - Federal News Network",
+                    "source": "federalnewsnetwork.com",
+                    "section": "An ninh và Quốc phòng",
+                    "summary": "Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles."
+                  },
+                  {
+                    "source": "reuters.com",
+                    "section": "Quy định pháp lý và An toàn AI",
+                    "summary": "Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới.",
+                    "title": "Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters",
+                    "url": "https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10"
+                  }
+                ],
+                "template": "sections"
+              },
+              "result": {
+                "tool": "render_digest",
+                "template": "sections",
+                "markdown": "# Tin tức AI nổi bật trong ngày\n\n## Việc làm và Kinh tế\n- AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm tron... - [fox10tv.com](https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity)\n\n## Giáo dục và Chính sách\n- Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi... - [nbcsandiego.com](https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437)\n\n## Cơ sở hạ tầng và Trung tâm dữ liệu\n- Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là 'khoản ưu đãi lớn' dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ. - [time.com](https://time.com/article/2026/11/10/permitting-bill-data-centers)\n\n## An ninh và Quốc phòng\n- Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles. - [federalnewsnetwork.com](https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat)\n\n## Quy định pháp lý và An toàn AI\n- Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới. - [reuters.com](https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10)\n",
+                "item_count": 5
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "assistant_text": "# Tin tức AI nổi bật trong ngày\n\n## Việc làm và Kinh tế\n- [AI and your job: Threat or opportunity?](https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity) – **fox10tv.com**  \n  AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm trong lĩnh vực xây dựng, sản xuất trung tâm dữ liệu và sản xuất chip, đồng thời giúp nhân sự văn phòng có tay nghề cao tăng năng suất.\n\n## Giáo dục và Chính sách\n- [Google AI policy forces decision for San Diego schools – NBC 7 San Diego](https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437) – **nbcsandiego.com**  \n  Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi ích công nghệ và vấn đề kiểm soát quyền truy cập của học sinh.\n\n## Cơ sở hạ tầng và Trung tâm dữ liệu\n- [Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn](https://time.com/article/2026/11/10/permitting-bill-data-centers) – **time.com**  \n  Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là \"khoản ưu đãi lớn\" dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ.\n\n## An ninh và Quốc phòng\n- [Military-made AI tool helped thwart World Cup bomb threat - Federal News Network](https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat) – **federalnewsnetwork.com**  \n  Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles.\n\n## Quy định pháp lý và An toàn AI\n- [Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters](https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10) – **reuters.com**  \n  Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "AI",
+            "timeframe": "day",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "AI and your job: Threat or opportunity?",
+                "url": "https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity",
+                "source": "fox10tv.com",
+                "summary": "MOBILE, Ala. (WALA) - Artificial intelligence is becoming a bigger part of everyday life, raising questions about what the technology could mean for workers and their jobs.\n\nSome economists believe AI poses a particular threat to entry-level and repetitive work, including call center, data entry and junior copywriting jobs, according to The Wall Street Journal. Those tasks may be easier to automate. [...] But AI could also create opportunities. A Bloomberg article points to potential job growth in construction and manufacturing as companies build data centers and produce the chips that power the technology. Some higher-skilled office workers could also benefit if AI helps them become more productive. [...] The long-term impact on jobs remains unclear, but workers can take steps to prepare. Exploring AI chatbots, writing assistants and other tools may help people find ways to work more efficiently and develop skills that complement the technology.",
+                "score": 0.42348245
+              },
+              {
+                "title": "Google AI policy forces decision for San Diego schools – NBC 7 San Diego",
+                "url": "https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437",
+                "source": "nbcsandiego.com",
+                "summary": "As districts consider their options, students are already seeing artificial intelligence become a more common part of everyday learning.\n\n“I feel like I see a lot of people using AI now,” said Delilah Ortiz, a student at El Camino High School.\n\nSome students believe the focus should be on establishing guidelines for AI use rather than banning the technology entirely. [...] San Diego County school districts face a January deadline to decide whether to opt in to Google's artificial intelligence features or lose access to the company's search engine, forcing educators to weigh the benefits of AI against concerns about student access to the technology. [...] Google plans to disable a range of AI-powered features, including Gemini, Gemini Notebook and Search in January to give school districts more control over the technology students can access. However, districts that want to continue using Google Search will have to opt in to the AI features.\n\nStream San Diego News for free, 24/7, wherever you are with NBC 7.\n\nWatch button  WATCH HERE",
+                "score": 0.202917
+              },
+              {
+                "title": "Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn",
+                "url": "https://time.com/article/2026/11/10/permitting-bill-data-centers",
+                "source": "time.com",
+                "summary": "Personalized Content\n\n## Business\n\nFollow this section to personalize your feed and get instant alerts.\n\nWHY FOLLOW?\n\nUpdate your preferences in Account Settings\n\nPersonalized Content\n\n## AI\n\nFollow this tag to personalize your feed and get instant alerts.\n\nWHY FOLLOW?\n\nUpdate your preferences in Account Settings\n\n# Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn\n\nAndrew R. Chow\n\nPersonalized Content\n\nAndrew R. Chow\n\n## Andrew R. Chow [...] The bill’s advocates argue that its passage would serve as a rare bipartisan win and a victory for affordability. But critics, especially those on the left, are calling for Democrats to wait until the next Congress. “You just heard Americans demand much more of a say in a way that AI is shaping their lives,” says Michele Jawando, the CEO of Omidyar Network. “Whenever you try to ram something through in a lame duck Congress before you have a hundred new House members, that’s never a good look",
+                "score": 0.19392508
+              },
+              {
+                "title": "Military-made AI tool helped thwart World Cup bomb threat - Federal News Network",
+                "url": "https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat",
+                "source": "federalnewsnetwork.com",
+                "summary": "The 2026 World Cup brought more than six million spectators from around the world to more than 100 matches in 16 host cities in the U.S., Canada and Mexico over the course of two months, prompting a massive interagency effort to secure those sites using technologies like AI and drones. Two people were charged in connection with another bomb threat against FIFA during a World Cup match at MetLife Stadium in New Jersey. [...] A military-made artificial intelligence tool helped law enforcement thwart a bomb threat at the FIFA World Cup in California this summer.\n\nThe previously undisclosed incident occurred June 18, when Switzerland faced Bosnia and Herzegovina at SoFi Stadium outside Los Angeles, Army Capt. Ryan Hetrick, who leads the Pentagon’s Generative AI Task Force, said Nov. 6 at an AI event in Washington. [...] Hetrick has become one of the military’s biggest — and busiest — evangelists for AI. The GenAI Task Force travels around the globe to sit down with troops on operations floors and in the field and find AI fixes for their most pressing problems.",
+                "score": 0.19305643
+              },
+              {
+                "title": "Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters",
+                "url": "https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10",
+                "source": "reuters.com",
+                "summary": "However, both companies told Australian parliament last ​month that they would welcome ​laws requiring them to ⁠report data breaches carried out by their AI agents, acknowledging the decision to notify was currently at their discretion.\n\nAlbanese said his centre-left ​Labor government would set up an AI regulator to oversee security ​controls throughout ⁠the development and deployment of AI systems, identify serious risks and conduct independent evaluations of AI models. [...] \"The AI safety regulator will be able to enforce significant penalties for AI companies ⁠doing the ​wrong thing,\" he said.\n\nThe mandatory AI safety and ​security protections will form part of the government's proposed AI legislation, Albanese said, which it plans to introduce in ​Parliament next year.\n\nReporting by Renju Jose in Sydney; Editing by Christian Schmollinger and Saad Sayeed\n\nOur Standards: The Thomson Reuters Trust Principles. [...] OpenAI has said it learned of the breach only in August ​and that the incident was unintentional. Its review found no evidence that patient records were accessed by ‌the ⁠agent.\n\nThe breach has added to friction between Australia and US technology companies, after Canberra refused ChatGPT maker OpenAI and rival Anthropic exemptions from copyright laws for model training, instead requiring them to negotiate licensing agreements with Australian rights holders.",
+                "score": 0.18111867
+              }
+            ]
+          }
+        },
+        {
+          "tool": "format",
+          "args": {
+            "headline": "Tin tức AI nổi bật trong ngày",
+            "items": [
+              {
+                "source": "fox10tv.com",
+                "url": "https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity",
+                "title": "AI and your job: Threat or opportunity?",
+                "summary": "AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm trong lĩnh vực xây dựng, sản xuất trung tâm dữ liệu và sản xuất chip, đồng thời giúp nhân sự văn phòng có tay nghề cao tăng năng suất.",
+                "section": "Việc làm và Kinh tế"
+              },
+              {
+                "title": "Google AI policy forces decision for San Diego schools – NBC 7 San Diego",
+                "summary": "Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi ích công nghệ và vấn đề kiểm soát quyền truy cập của học sinh.",
+                "section": "Giáo dục và Chính sách",
+                "url": "https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437",
+                "source": "nbcsandiego.com"
+              },
+              {
+                "title": "Congress’s Permitting Bill Is a ‘Massive Giveaway’ to the AI Data Center Industry, Critics Warn",
+                "source": "time.com",
+                "summary": "Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là 'khoản ưu đãi lớn' dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ.",
+                "url": "https://time.com/article/2026/11/10/permitting-bill-data-centers",
+                "section": "Cơ sở hạ tầng và Trung tâm dữ liệu"
+              },
+              {
+                "url": "https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat",
+                "title": "Military-made AI tool helped thwart World Cup bomb threat - Federal News Network",
+                "source": "federalnewsnetwork.com",
+                "section": "An ninh và Quốc phòng",
+                "summary": "Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles."
+              },
+              {
+                "source": "reuters.com",
+                "section": "Quy định pháp lý và An toàn AI",
+                "summary": "Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới.",
+                "title": "Australia to mandate AI breach reporting, create regulator after OpenAI breach | Reuters",
+                "url": "https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10"
+              }
+            ],
+            "template": "sections"
+          },
+          "result": {
+            "tool": "render_digest",
+            "template": "sections",
+            "markdown": "# Tin tức AI nổi bật trong ngày\n\n## Việc làm và Kinh tế\n- AI đang làm dấy lên nhiều câu hỏi về tác động đối với việc làm. Các chuyên gia kinh tế cho rằng công việc đầu vào và mang tính lặp đi lặp lại (như tổng đài, nhập liệu, viết quảng cáo sơ cấp) có nguy cơ bị tự động hóa cao. Ngược lại, AI cũng tạo cơ hội tăng trưởng việc làm tron... - [fox10tv.com](https://www.fox10tv.com/2026/11/10/ai-your-job-threat-or-opportunity)\n\n## Giáo dục và Chính sách\n- Các học khu tại San Diego County đối mặt với hạn chót vào tháng 1 để quyết định có chấp nhận các tính năng AI của Google (bao gồm Gemini, Gemini Notebook và Tìm kiếm) hay chấp nhận mất quyền truy cập vào công cụ tìm kiếm của Google, buộc các nhà giáo dục phải cân nhắc giữa lợi... - [nbcsandiego.com](https://www.nbcsandiego.com/news/local/googles-ai-ultimatum-forces-san-diego-schools-make-tough-choice/4099437)\n\n## Cơ sở hạ tầng và Trung tâm dữ liệu\n- Dự luật cấp phép mới của Quốc hội Mỹ đang vấp phải sự chỉ trích từ các nhà phê bình, những người gọi đây là 'khoản ưu đãi lớn' dành cho ngành công nghiệp trung tâm dữ liệu AI và kêu gọi các bên thận trọng trước khi thúc đẩy thông qua tại Quốc hội khóa cũ. - [time.com](https://time.com/article/2026/11/10/permitting-bill-data-centers)\n\n## An ninh và Quốc phòng\n- Một công cụ AI do quân đội phát triển thuộc Lực lượng Đặc nhiệm GenAI của Lầu Năm Góc đã hỗ trợ cơ quan thực thi pháp luật ngăn chặn thành công một âm mưu đánh bom tại World Cup 2026 trong trận đấu giữa Thụy Sĩ và Bosnia - Herzegovina tại Sân vận động SoFi gần Los Angeles. - [federalnewsnetwork.com](https://federalnewsnetwork.com/artificial-intelligence/2026/11/military-made-ai-tool-helped-thwart-world-cup-bomb-threat)\n\n## Quy định pháp lý và An toàn AI\n- Chính phủ Australia thông báo kế hoạch thành lập cơ quan quản lý an toàn AI và bắt buộc báo cáo các vụ vi phạm bảo mật dữ liệu liên quan đến AI, sau sự cố tác nhân AI của OpenAI xâm phạm dữ liệu chính phủ. Các quy định này sẽ được đưa ra Quốc hội vào năm tới. - [reuters.com](https://www.reuters.com/world/australia-tightens-ai-oversight-rules-after-openai-agent-breached-government-2026-11-10)\n",
+            "item_count": 5
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T12:03:59"
+    }
+  ]
+}

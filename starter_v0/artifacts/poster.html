@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Agent Studio — Day 03 Lab Poster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --accent: #06B6D4;
+      --bg-dark: #0B1120;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --success: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0B1120 radial-gradient(circle at 50% 0%, #1E3A8A 0%, #0B1120 70%);
+      color: var(--text-main);
+      padding: 30px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .poster-container {
+      max-width: 1100px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 24px;
+      padding: 40px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(37, 99, 235, 0.2);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+
+    .badge-pill {
+      background: rgba(37, 99, 235, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      color: #60A5FA;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF 30%, #93C5FD 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    .team-info {
+      text-align: right;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .team-members {
+      color: #38BDF8;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+
+    .metric-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #38BDF8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .metric-value.green {
+      color: #34D399;
+    }
+
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title span {
+      color: var(--accent);
+    }
+
+    .tool-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .tool-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 10px;
+    }
+
+    .tool-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #60A5FA;
+    }
+
+    .tool-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    .highlight-box {
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      background: rgba(16, 185, 129, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .highlight-title {
+      font-weight: 700;
+      color: #34D399;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .sample-q {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sample-q li {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #E2E8F0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .sample-q li strong {
+      color: #F59E0B;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .footer {
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .demo-link {
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: opacity 0.2s;
+    }
+
+    .demo-link:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster-container">
+    <div class="header">
+      <div>
+        <div class="badge-pill">Day 03 Lab — Tool Calling & Eval Showdown</div>
+        <h1>Research Agent Studio</h1>
+      </div>
+      <div class="team-info">
+        <div>Nhóm Nghiên Cứu & Phát Triển Agent</div>
+        <div class="team-members">Quang • Đạt • Đức • Hùng</div>
+        <div style="font-size: 0.8rem; margin-top: 2px;">Gemini 3.5 Flash-Lite</div>
+      </div>
+    </div>
+
+    <!-- METRICS -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-value green">95.0%</div>
+        <div class="metric-label">Độ chính xác Base (v2/v3)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value green">100%</div>
+        <div class="metric-label">Độ chính xác Tool Routing</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value green">10/10</div>
+        <div class="metric-label">Group Eval Cases (100%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">92/92</div>
+        <div class="metric-label">Unit Tests Xanh (0 Fail/Skip)</div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-grid">
+      <!-- LEFT: TOOL ECOSYSTEM -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>🛠️</span> Hệ Sinh Thái Công Cụ (11 Tools)
+        </div>
+        <div class="tool-list">
+          <div class="tool-item">
+            <div class="tool-name">lookup</div>
+            <div class="tool-desc">Tìm kiếm tin tức & web tức thời qua Tavily</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">fetch</div>
+            <div class="tool-desc">Trích xuất nội dung toàn văn Markdown qua Firecrawl</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">timeline</div>
+            <div class="tool-desc">Đọc các bài đăng gần đây của tài khoản X/Twitter</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">social_search</div>
+            <div class="tool-desc">Tìm kiếm bài đăng thảo luận X (Top / Latest)</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">format</div>
+            <div class="tool-desc">Định dạng bản tin Markdown Digest có trích dẫn</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">clarify</div>
+            <div class="tool-desc">Hỏi lại khi thiếu URL, handle hoặc cần xác nhận</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">policy</div>
+            <div class="tool-desc">Tra cứu chính sách công ty (chống Injection)</div>
+          </div>
+          <div class="tool-item">
+            <div class="tool-name">send</div>
+            <div class="tool-desc">Gửi Telegram an toàn (Guardrail xác nhận)</div>
+          </div>
+        </div>
+
+        <!-- NEW TOOL SPOTLIGHT -->
+        <div class="highlight-box">
+          <div class="highlight-title">⭐ Tool Mới Tự Phát Triển: domain_summary</div>
+          <div style="font-size: 0.8rem; color: #D1FAE5; line-height: 1.4;">
+            Tự động bóc tách, chuẩn hóa tên miền (gộp subdomain www) và đếm tần suất xuất hiện của các link nguồn trong nghiên cứu. Hỗ trợ lọc URL lỗi và trả về thống kê súc tích cho người dùng.
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: SAMPLE QUESTIONS -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>💬</span> Câu Hỏi Mẫu Dùng Thử
+        </div>
+        <ul class="sample-q">
+          <li>
+            <strong>1.</strong>
+            <div>"Tin tức AI hôm nay có gì nổi bật trên web?" <em>(Tra cứu web & digest)</em></div>
+          </li>
+          <li>
+            <strong>2.</strong>
+            <div>"Xem tweet mới nhất của Sam Altman" <em>(Map tên sang handle sama)</em></div>
+          </li>
+          <li>
+            <strong>3.</strong>
+            <div>"Thống kê số lượng URL theo từng tên miền từ danh sách 3 link sau: ..." <em>(Tool domain_summary)</em></div>
+          </li>
+          <li>
+            <strong>4.</strong>
+            <div>"Tóm tắt bài viết này giúp mình" <em>(Bảo vệ an toàn: gọi clarify hỏi URL)</em></div>
+          </li>
+          <li>
+            <strong>5.</strong>
+            <div>"Đăng bản tin lên Telegram" <em>(Guardrail: hỏi yes/no trước khi gửi)</em></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>Giao diện Streamlit: <code>http://localhost:8501</code> (Cloudflare Tunnel Live Demo)</div>
+      <a href="http://localhost:8501" target="_blank" class="demo-link">Trải Nghiệm Live Demo ➔</a>
+    </div>
+  </div>
+</body>
+</html>
+
