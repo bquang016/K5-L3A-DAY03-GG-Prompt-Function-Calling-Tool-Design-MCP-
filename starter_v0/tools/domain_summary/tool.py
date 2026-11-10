@@ -1,25 +1,28 @@
+from __future__ import annotations
+
+from typing import Any
 from urllib.parse import urlparse
 
 
-def domain_summary(urls: list) -> dict:
+def domain_summary(urls: Any) -> dict[str, Any]:
     """Đếm số URL theo từng tên miền."""
-    # 1. Kiểm tra đầu vào: phải là list và không rỗng
     if not isinstance(urls, list) or len(urls) == 0:
-        return {"error": "urls phải là một danh sách URL không rỗng"}
+        return {
+            "tool": "domain_summary",
+            "error": "urls phải là một danh sách URL không rỗng",
+        }
 
-    counts = {}
-    invalid = []
+    counts: dict[str, int] = {}
+    invalid: list[Any] = []
 
     for item in urls:
-        # 2. Phần tử không phải chuỗi -> coi là URL lỗi
         if not isinstance(item, str):
-            invalid.append(str(item))
+            invalid.append(item)
             continue
 
         url = item.strip()
         parsed = urlparse(url)
 
-        # 3. URL hợp lệ phải có http/https và có tên miền
         if parsed.scheme not in ("http", "https") or not parsed.hostname:
             invalid.append(item)
             continue
@@ -29,15 +32,18 @@ def domain_summary(urls: list) -> dict:
             domain = domain[4:]
         counts[domain] = counts.get(domain, 0) + 1
 
-    # 4. Nếu không có URL nào hợp lệ -> trả lỗi
-    if not counts:
-        return {"error": "Không có URL hợp lệ nào", "invalid_urls": invalid}
+    if invalid:
+        return {
+            "tool": "domain_summary",
+            "error": "Chứa URL không hợp lệ hoặc phần tử sai kiểu",
+            "invalid_urls": [str(x) for x in invalid],
+        }
 
-    # Sắp xếp domain có nhiều URL nhất lên đầu
-    sorted_counts = dict(sorted(counts.items(), key=lambda kv: -kv[1]))
+    sorted_counts = dict(sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])))
     return {
+        "tool": "domain_summary",
         "total_urls": len(urls),
-        "valid_urls": sum(counts.values()),
-        "invalid_urls": invalid,
+        "valid_urls": len(urls),
+        "domain_counts": sorted_counts,
         "domains": sorted_counts,
     }
