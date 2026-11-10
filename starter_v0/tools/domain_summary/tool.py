@@ -1,43 +1,62 @@
-from urllib.parse import urlparse
+
+from __future__ import annotations
+
+from typing import Any
+from urllib.parse import urlsplit
 
 
-def domain_summary(urls: list) -> dict:
-    """Đếm số URL theo từng tên miền."""
-    # 1. Kiểm tra đầu vào: phải là list và không rỗng
-    if not isinstance(urls, list) or len(urls) == 0:
-        return {"error": "urls phải là một danh sách URL không rỗng"}
+def domain_summary(urls: list[str] | None = None) -> dict[str, Any]:
+    """
+    Count valid URLs grouped by domain.
+    """
 
-    counts = {}
-    invalid = []
+    # 1. Validate input
+    if not isinstance(urls, list):
+        return {
+            "tool": "domain_summary",
+            "error": "urls must be a list of strings"
+        }
 
-    for item in urls:
-        # 2. Phần tử không phải chuỗi -> coi là URL lỗi
-        if not isinstance(item, str):
-            invalid.append(str(item))
-            continue
+    domain_counts: dict[str, int] = {}
 
-        url = item.strip()
-        parsed = urlparse(url)
+    # 2. Process URLs
+    for url in urls:
 
-        # 3. URL hợp lệ phải có http/https và có tên miền
-        if parsed.scheme not in ("http", "https") or not parsed.hostname:
-            invalid.append(item)
-            continue
+        # Reject non-string or empty values
+        if not isinstance(url, str) or not url.strip():
+            return {
+                "tool": "domain_summary",
+                "error": "Each URL must be a non-empty string"
+            }
 
-        domain = parsed.hostname.lower()
-        if domain.startswith("www."):
-            domain = domain[4:]
-        counts[domain] = counts.get(domain, 0) + 1
+        try:
+            parsed = urlsplit(url.strip())
 
-    # 4. Nếu không có URL nào hợp lệ -> trả lỗi
-    if not counts:
-        return {"error": "Không có URL hợp lệ nào", "invalid_urls": invalid}
+            # Only accept HTTP and HTTPS
+            if parsed.scheme.lower() not in ("http", "https"):
+                raise ValueError
 
-    # Sắp xếp domain có nhiều URL nhất lên đầu
-    sorted_counts = dict(sorted(counts.items(), key=lambda kv: -kv[1]))
+            # Extract hostname
+            domain = parsed.hostname
+
+            if not domain:
+                raise ValueError
+
+            # Normalize domain
+            domain = domain.lower()
+
+            # Count domain
+            domain_counts[domain] = domain_counts.get(domain, 0) + 1
+
+        except ValueError:
+            return {
+                "tool": "domain_summary",
+                "error": f"Invalid URL: {url}"
+            }
+
+    # 3. Return result
     return {
-        "total_urls": len(urls),
-        "valid_urls": sum(counts.values()),
-        "invalid_urls": invalid,
-        "domains": sorted_counts,
+        "tool": "domain_summary",
+        "total_urls": sum(domain_counts.values()),
+        "domain_counts": domain_counts
     }
