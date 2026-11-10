@@ -1,0 +1,813 @@
+{
+  "run_id": "v3_B_group_gemini_20261110T123427147851",
+  "version": "v3",
+  "artifact_version": "v3+pabf48a4da102+tb74750c49704",
+  "prompt_hash": "abf48a4da10297b2d09b2d34cc9a132a345cd898623e12f38aa4e365d8f881e3",
+  "tools_hash": "b74750c4970410f952054b1f2ce43ed4e95f41aa5dc1d35145f6a3b20ecf9a71",
+  "phase": "B",
+  "suite": "group",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "system_prompt": "C:\\Users\\buida\\vinuni_day03_lab\\K5-L3A-DAY03-GG-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\buida\\vinuni_day03_lab\\K5-L3A-DAY03-GG-Prompt-Function-Calling-Tool-Design-MCP-\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day03_group_eval",
+  "dataset_role": "group",
+  "description": "Eval của nhóm: 5 single-turn + 5 multi-turn, bao phủ tool mới (domain_summary) và các lỗi quan sát được ở v0 (đoán mò thay vì clarify, gửi không xác nhận, query thừa chữ, nhiễm ngữ cảnh đa lượt).",
+  "generated_at": "2026-11-10T12:34:27",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 10,
+    "case_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 1.0,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G01_missing_handle_pronoun",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_pronoun_no_antecedent",
+        "difficulty": "medium",
+        "what_it_tests": "Chỉ nói 'anh ấy' mà không nêu tên/handle → phải clarify hỏi là ai, KHÔNG đoán một tài khoản (lỗi v0 ở R10)."
+      },
+      "input": "Xem giúp mình mấy bài đăng gần đây của anh ấy",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn vui lòng cho biết tên tài khoản (handle) trên Twitter/X của người bạn muốn xem bài đăng (ví dụ: sama, elonmusk)?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn vui lòng cho biết tên tài khoản (handle) trên Twitter/X của người bạn muốn xem bài đăng (ví dụ: sama, elonmusk)?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn vui lòng cho biết tên tài khoản (handle) trên Twitter/X của người bạn muốn xem bài đăng (ví dụ: sama, elonmusk)?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_confirm_send_with_text",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_before_write_with_content",
+        "difficulty": "medium",
+        "what_it_tests": "Người dùng đã đưa sẵn nội dung nhưng chưa xác nhận gửi → phải hỏi yes_no trước, KHÔNG gọi send(confirmed=true) ngay (lỗi v0 ở R12)."
+      },
+      "input": "Đăng giúp mình lên Telegram nội dung này: 'Họp team lúc 15h chiều nay'",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no",
+              "question": "Bạn có chắc chắn muốn gửi nội dung 'Họp team lúc 15h chiều nay' lên Telegram không?"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "yes_no",
+            "question": "Bạn có chắc chắn muốn gửi nội dung 'Họp team lúc 15h chiều nay' lên Telegram không?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có chắc chắn muốn gửi nội dung 'Họp team lúc 15h chiều nay' lên Telegram không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_news_month_short_query",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_timeframe_month_concise_query",
+        "difficulty": "medium",
+        "what_it_tests": "'trong tháng này' → timeframe=month, tin tức → topic=news, query chỉ là từ khoá 'Nvidia' (không thêm 'news'/'tháng này') (lỗi query dư ở v0: R03, R13)."
+      },
+      "input": "Tìm tin tức về Nvidia trong tháng này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Nvidia",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Nvidia",
+              "timeframe": "month",
+              "topic": "news"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Nvidia",
+            "timeframe": "month",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Nvidia",
+            "topic": "news",
+            "timeframe": "month",
+            "items": [
+              {
+                "title": "Nvidia",
+                "url": "https://tavily.com/knowledge/company/TXRhn2TKUD7t",
+                "source": "tavily.com",
+                "summary": "# NVIDIA\nID: TXRhn2TKUD7t\nWebsite: www.nvidia.com\nHeadquarters: Santa Clara, CA, United States\nLinkedIn: www.linkedin.com/company/nvidia · 6,301,389 followers\nIndustry: Computer Hardware Manufacturing\nIndustry codes: SIC 73, 737, NAICS 33, 334\nCompany type: Public Company\nFounded: 1993 [...] Description: NVIDIA is a world leader in the field of artificial intelligence, specifically in the field of GPU. They focus on AI, HPC, gaming, creative design, autonomy vehicles, and robotics. [...] ## Products and services\nKeywords: technology, computers_electronics_and_technology/computer_hardware, gpu-accelerated computing, artificial intelligence, deep learning, virtual reality, gaming, self-driving cars, supercomputing, robotics, virtualization, parallel computing",
+                "score": 0.8377398
+              },
+              {
+                "title": "Nvidia investigates reports CEO Jensen Huang was targeted by Chinese spy | AP News",
+                "url": "https://apnews.com/article/nvidia-jensen-huang-investigation-chinese-spy-68839e7ca6ba2b121529f7e475e501d6",
+                "source": "apnews.com",
+                "summary": "Add AP News on Google  Add AP News as your preferred source to see more of our stories on Google. Share \n\n — Nvidia is opening an investigation into reports that CEO Jensen Huang was the “target of a foreign intelligence effort,” the company’s board of directors said Sunday.\n\nThe announcement came after Huang acknowledged to the board that he had been intimate with a business executive whom U.S. intelligence determined was gathering information for Beijing, The New York Times reported. [...] Huang apologized in a message to the company, according to the Times. “I was unfaithful to my wife,” he said. “My actions hurt her and our children. There is no excuse for what I did. I am deeply sorry.”\n\nNvidia’s board said in a statement it has “no reason to believe that either national security or Nvidia secrets were compromised,” but that its inquiry would examine all available information. Huang “fully supports the review and has committed to cooperating with it,” the board said.",
+                "score": 0.6612456
+              },
+              {
+                "title": "Nvidia stock falls amid probe into CEO’s relationship with Chinese spy",
+                "url": "https://www.nbcnews.com/business/markets/nvidia-stock-falls-probe-ceos-relationship-chinese-spy-rcna608290",
+                "source": "nbcnews.com",
+                "summary": "By Steve Kopack and Rob Wile\n\nNvidia’s stock slid about 4% on Monday after the company announced that it had opened an investigation into CEO Jensen Huang’s relationship with a woman that U.S. intelligence agencies say is a Chinese spy.\n\nThe probe has the potential to unsettle the entire AI boom, fueled by trillions of dollars of spending and investments, in part to purchase Nvidia’s cutting-edge AI chips. Nvidia’s drop wiped out more than $200 billion in value. [...] Nvidia’s peers, such as AMD, Qualcomm, Taiwan Semi and Intel, all rose along with the broader market. Nvidia was the biggest loser on the Dow, the Nasdaq 100 and S&P 500.\n\nWith so many outstanding questions about the Huang scandal, few major analysts that cover Nvidia had weighed in on Monday morning about what it could mean for the company’s future.\n\nBut those who did said it was a blemish on an otherwise sterling track record, which could spark even more investigations. [...] “A committee of independent directors, assisted by outside independent counsel, will oversee the investigation,” Nvidia said in a Sunday statement. “The Board prioritizes U.S. national and economic security, which is paramount to the interests of NVIDIA and its shareholders.”\n\nAn Nvidia spokesperson told NBC News that Huang was “committed to continuing to lead NVIDIA as CEO without interruption.”",
+                "score": 0.6279746
+              },
+              {
+                "title": "Nvidia's shares slide as chip giant probes CEO over spy claims | Reuters",
+                "url": "https://www.reuters.com/world/asia-pacific/south-korea-says-nvidia-issues-wont-affect-contracted-gpu-supplies-2026-11-09",
+                "source": "reuters.com",
+                "summary": "SEOUL/SYDNEY, Nov 9 (Reuters) - Nvidia (NVDA.O) shares tumbled on Monday after an internal investigation into whether CEO Jensen Huang had been targeted by a foreign intelligence effort ​put his future at the AI chipmaker under scrutiny. [...] Nvidia's shares tumbled around 8% in early trading, extending last week's selloff and pushing the stock to fresh multi-month lows. At the current levels, the chipmaker would lose around $350 billion in value from its last ​closing price.\n\n\"The market's probably telling you now this does no favors to the stock whatsoever in a time when there's a lot of conjecture as to the build-out of data centers,\" said Chris Weston, head of research at brokerage Pepperstone in ​Melbourne. [...] He is Nvidia's fifth-largest shareholder with a roughly 3.6% stake, according to LSEG data, and keeps a tight grip on the company through an unusually ​flat structure in which dozens of executives report directly to him.\n\nBut unlike Meta Platforms (META.O) or SpaceX (SPCX.O), Nvidia has no dual-class shares that would give its co-founder majority voting control.",
+                "score": 0.62000114
+              },
+              {
+                "title": "Nvidia launches investigation into CEO’s alleged relationship with Chinese spy : NPR",
+                "url": "https://www.npr.org/2026/11/08/nx-s1-6034036/nvidia-launches-investigation-into-ceos-alleged-relationship-with-chinese-spy",
+                "source": "npr.org",
+                "summary": "Rebecca Hersher\n\nNvidia CEO Jensen Huang delivers his keynote on the company's GTC event in Berlin, Germany, Wednesday, Oct. 21, 2026.\n\nNvidia CEO Jensen Huang delivers his keynote on the company's GTC event in Berlin, Germany, Wednesday, Oct. 21, 2026.  Markus Schreiber/AP  hide caption\n\n Markus Schreiber/AP\n\nThe massive artificial intelligence chip maker Nvidia says it is launching an internal investigation, after reports that the company's CEO was in a close relationship with a Chinese spy. [...] Nvidia dominates the global market for AI chips, and has seen explosive growth in recent years, as NPR has reported. The company started as a manufacturer of chips for computer graphics, which later turned out to be crucial for training artificial intelligence.\n\nNvidia's CEO and President Trump have repeatedly appeared in public together in recent years. According to Huang, Nvidia is helping to fund the construction of a new ballroom at the White House. [...] In the statement announcing the investigation, Nvidia cited recent reporting by The New York Times, which alleges Nvidia CEO Jensen Huang was the target of a Chinese intelligence operation that sought to send advanced Nvidia AI chips to China.\n\n\"While the Board has no reason to believe that either national security or NVIDIA secrets were compromised, the Board's inquiry will examine all available information,\" the statement from the company's board of directors reads in part.",
+                "score": 0.61363083
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_domain_summary_count",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "new_tool_domain_summary_single",
+        "difficulty": "easy",
+        "what_it_tests": "Người dùng đưa danh sách URL và yêu cầu thống kê theo tên miền → phải gọi đúng tool mới domain_summary với danh sách urls."
+      },
+      "input": "Thống kê số lượng URL theo từng tên miền giúp mình từ danh sách này: https://vnexpress.net/ai-1, https://www.vnexpress.net/ai-2, https://dantri.com.vn/tech",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://vnexpress.net/ai-1",
+                "https://www.vnexpress.net/ai-2",
+                "https://dantri.com.vn/tech"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://vnexpress.net/ai-1",
+                "https://www.vnexpress.net/ai-2",
+                "https://dantri.com.vn/tech"
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "domain_summary",
+          "args": {
+            "urls": [
+              "https://vnexpress.net/ai-1",
+              "https://www.vnexpress.net/ai-2",
+              "https://dantri.com.vn/tech"
+            ]
+          },
+          "result": {
+            "tool": "domain_summary",
+            "total_urls": 3,
+            "valid_urls": 3,
+            "domain_counts": {
+              "vnexpress.net": 2,
+              "dantri.com.vn": 1
+            },
+            "domains": {
+              "vnexpress.net": 2,
+              "dantri.com.vn": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_thanks_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "no_tool_chitchat",
+        "difficulty": "easy",
+        "what_it_tests": "Câu cảm ơn/xã giao không cần tra cứu → trả lời ngắn, KHÔNG gọi tool nào."
+      },
+      "input": "Cảm ơn bạn nhé, mình hiểu rồi",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Rất vui vì bạn đã hiểu! Nếu bạn cần tra cứu thông tin, tìm kiếm bài báo khoa học hay tổng hợp tin tức gì, cứ cho mình biết nhé.",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "GM01_confirm_then_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_confirmed_send",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: yêu cầu đăng → đưa nội dung → 'ok gửi đi' (xác nhận rõ ràng) → gọi send với confirmed=true. Kiểm tra agent KHÔNG hỏi lại vô hạn khi người dùng đã xác nhận."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin AI hôm nay lên Telegram giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Nội dung: 'AI hôm nay: không có tin lớn'"
+        },
+        {
+          "role": "user",
+          "content": "Ok, gửi đi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "text": "AI hôm nay: không có tin lớn",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "AI hôm nay: không có tin lớn",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM02_clarify_name_to_handle",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_fill_name_mapping",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: thiếu người → lượt 2 cho tên Yann LeCun → map thành handle ylecun, lượt 3 chốt limit=7."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Cho mình xem tweet gần đây"
+        },
+        {
+          "role": "user",
+          "content": "Của Yann LeCun"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 7 cái thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "ylecun",
+              "limit": 7
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "limit": 7,
+              "screenname": "ylecun"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "limit": 7,
+            "screenname": "ylecun"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "ylecun",
+            "items": [
+              {
+                "title": "RT @randall_balestr: Our first major update on https://t.co/v8KSoNBKqM",
+                "summary": "RT @randall_balestr: Our first major update on https://t.co/v8KSoNBKqM\n- venue confirmed in the heart of Manhattan\n- paper deadline is Dece…",
+                "url": "https://x.com/ylecun/status/2119929780057375160",
+                "source": "@ylecun",
+                "date": "Mon Nov 09 23:07:00 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 21,
+                  "views": "3522"
+                }
+              },
+              {
+                "title": "RT @ylecun: @TimDarcet @gabriberton The P in JEPA stands for predictive.",
+                "summary": "RT @ylecun: @TimDarcet @gabriberton The P in JEPA stands for predictive.\nThe main distinction is not between JEA and JEPA, but between Join…",
+                "url": "https://x.com/ylecun/status/2119522897555595583",
+                "source": "@ylecun",
+                "date": "Sun Nov 08 20:10:12 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 66,
+                  "views": null
+                }
+              },
+              {
+                "title": "RT @TheTuringPost: There's one great example that shows how physics can help upgrade AI world models, and it's LeHami.",
+                "summary": "RT @TheTuringPost: There's one great example that shows how physics can help upgrade AI world models, and it's LeHami.\n\n@ylecun, @randall_b…",
+                "url": "https://x.com/ylecun/status/2119482154715349117",
+                "source": "@ylecun",
+                "date": "Sun Nov 08 17:28:18 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 47,
+                  "views": "5077"
+                }
+              },
+              {
+                "title": "RT @iamsupersocks: Arthur Mensch vient de poser sur LinkedIn la phrase que les députés devraient lire avant le 19 novemb",
+                "summary": "RT @iamsupersocks: Arthur Mensch vient de poser sur LinkedIn la phrase que les députés devraient lire avant le 19 novembre : quand Mistral…",
+                "url": "https://x.com/ylecun/status/2119479125458948535",
+                "source": "@ylecun",
+                "date": "Sun Nov 08 17:16:16 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 107,
+                  "views": "5036"
+                }
+              },
+              {
+                "title": "RT @DeBunKerEtoiles: Attention, quelles que soient vos opinions politiques par ailleurs, cette mesure de LFI est extrême",
+                "summary": "RT @DeBunKerEtoiles: Attention, quelles que soient vos opinions politiques par ailleurs, cette mesure de LFI est extrêmement nocive pour la…",
+                "url": "https://x.com/ylecun/status/2119476601343656428",
+                "source": "@ylecun",
+                "date": "Sun Nov 08 17:06:14 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 452,
+                  "views": "5089"
+                }
+              },
+              {
+                "title": "Reminder from 3 years ago.",
+                "summary": "Reminder from 3 years ago.",
+                "url": "https://x.com/ylecun/status/2119184445987287449",
+                "source": "@ylecun",
+                "date": "Sat Nov 07 21:45:19 +0000 2026",
+                "metrics": {
+                  "favorites": 3197,
+                  "retweets": 277,
+                  "views": "315319"
+                }
+              },
+              {
+                "title": "RT @ylecun: @gabriberton Several comments:",
+                "summary": "RT @ylecun: @gabriberton Several comments:\n1. image/video SSL methods differ by whether they use reconstruction or not. Joint embedding arc…",
+                "url": "https://x.com/ylecun/status/2119143975739142269",
+                "source": "@ylecun",
+                "date": "Sat Nov 07 19:04:30 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 54,
+                  "views": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM03_multiturn_domain_summary",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_new_tool_domain_summary",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: người dùng cung cấp URL rải rác qua 2 lượt đầu, lượt 3 yêu cầu thống kê theo tên miền → phải gom đủ 3 URL và gọi domain_summary."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mình có 2 link bài viết này: https://reuters.com/tech/ai-1 và https://cnbc.com/2026/ai-chip"
+        },
+        {
+          "role": "user",
+          "content": "Thêm cả link này nữa nhé: https://www.reuters.com/markets/us"
+        },
+        {
+          "role": "user",
+          "content": "Đếm số lượng URL theo từng tên miền trong tất cả các link mình vừa đưa"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://reuters.com/tech/ai-1",
+                "https://cnbc.com/2026/ai-chip",
+                "https://www.reuters.com/markets/us"
+              ]
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "domain_summary",
+            "args": {
+              "urls": [
+                "https://reuters.com/tech/ai-1",
+                "https://cnbc.com/2026/ai-chip",
+                "https://www.reuters.com/markets/us"
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "domain_summary",
+          "args": {
+            "urls": [
+              "https://reuters.com/tech/ai-1",
+              "https://cnbc.com/2026/ai-chip",
+              "https://www.reuters.com/markets/us"
+            ]
+          },
+          "result": {
+            "tool": "domain_summary",
+            "total_urls": 3,
+            "valid_urls": 3,
+            "domain_counts": {
+              "reuters.com": 2,
+              "cnbc.com": 1
+            },
+            "domains": {
+              "reuters.com": 2,
+              "cnbc.com": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM04_correct_timeframe_day_to_month",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_timeframe_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: ban đầu 'hôm nay' → sửa thành 'trong tháng này' → timeframe=month (không giữ day), query chỉ 'Tesla' (lỗi nhiễm ngữ cảnh ở v0: M02)."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin về Tesla hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "À thôi, lấy tin trong tháng này"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ về Tesla"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "Tesla",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "timeframe": "month",
+              "topic": "news",
+              "query": "Tesla"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "timeframe": "month",
+            "topic": "news",
+            "query": "Tesla"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Tesla",
+            "topic": "news",
+            "timeframe": "month",
+            "items": [
+              {
+                "title": "Tesla",
+                "url": "https://tavily.com/knowledge/company/jhbNmWAZiXj6",
+                "source": "tavily.com",
+                "summary": "# Tesla\nID: jhbNmWAZiXj6\nWebsite: www.tesla.com\nLegal name: Tesla, Inc.\nHeadquarters: Austin, Texas, United States\nLinkedIn: www.linkedin.com/company/tesla-motors · 12,397,954 followers\nIndustry: Motor Vehicle Manufacturing\nCompany type: Public Company\nSocial profiles: www.facebook.com/teslamotorscorp, www.twitter.com/tesla, www.crunchbase.com/organization/tesla-motors, www.instagram.com/teslamotors, www.youtube.com/@tesla\nEmail: reservations@teslamotors.com [...] Description: Tesla is accelerating the world’s transition to sustainable abundance. To achieve our mission, we're building a world powered by solar, enabled by battery storage and transported by electric vehicles. We’re committed to hiring and developing top talent from around the world for any given discipline. Headquartered in Texas, we operate six huge, vertically integrated factories across three continents. With over 100,000 employees, our teams take a first-principles approach to [...] ## Products and services\nKeywords: innovation in electric cars clean energy products, automotive-transportation, business-services, energy-utilities, batteries, conglomerates, electric-vehicles, energy-storage, solar, artificial intelligence (ai), auto insurance, automotive",
+                "score": 0.7208996
+              },
+              {
+                "title": "Musk admits Tesla doesn't have enough talent to build more than one car at a time after exodus | Electrek",
+                "url": "https://electrek.co/2026/11/09/tesla-deep-bench-gone-musk-admits-talent-shortage",
+                "source": "electrek.co",
+                "summary": "## Comments\n\n## Guides\n\nTesla\n\n### Tesla\n\nTesla is a transportation and energy company. It…\n\nTesla Cybertruck\n\n### Tesla Cybertruck\n\nTelsa Cybertruck will be released in 2021 with a…\n\n## Author\n\nAvatar for Fred Lambert   Fred Lambert   fredlambert \n\nFred is the Editor in Chief and Main Writer at Electrek.\n\nYou can send tips on Twitter (DMs open) or via email: fred@9to5mac.com\n\nThrough Zalkon.com, you can check out Fred’s portfolio and get monthly green stock investment ideas. [...] Tesla painted a very different picture just two years ago. At its 2024 shareholder meeting, it showed this slide of its lineup: the Model 3, Model Y, Model S, Model X, Cybertruck, and Semi, plus three vehicles under covers that Musk said were “going to be pretty special.”\n\nTesla vehicle lineup slide from its 2024 shareholder meeting, with three covered upcoming vehicles\n\nTesla lineup slide from its 2024 annual shareholder meeting (Tesla) [...] What’s not hard to see is the trend. Tesla has shown a complete inability to sustain multiple vehicle programs at once, and it’s getting harder for the automaker, not easier. If Tesla can’t hold on to the people who build its cars, how long before the Model 3 and Model Y get the same treatment as the Model S?\n\nBoth vehicle programs will undoubtedly go down in history as some of the most critical EVs of all time, but that doesn’t guarantee lasting success in a rapidly changing auto landscape.",
+                "score": 0.4250568
+              },
+              {
+                "title": "Tesla to pull the plug on Cybertruck after years of poor sales | Reuters",
+                "url": "https://www.reuters.com/business/autos-transportation/tesla-wind-down-cybertruck-production-texas-gigafactory-next-year-musk-says-2026-11-06",
+                "source": "reuters.com",
+                "summary": "Tesla has been shifting its focus to robotics and autonomy, a transition analysts say comes at the expense of the electric-vehicle business it helped pioneer as Chinese rivals gain ground. [...] Nov 6 (Reuters) - Tesla (TSLA.O) will wind down Cybertruck production at its Texas gigafactory around mid-2027, CEO Elon Musk said on Friday, after years of persistently weak ​sales for a futuristic model once touted as a rival to legacy pickup trucks. [...] The move is a major retreat from what has been one of Musk's pet projects. In an ‌X post, Musk said the wind-down would let Tesla make more of the Cybercab, a robotaxi he has made central to the automaker's autonomous-vehicle ambitions, but one that has yet to prove itself commercially.\n\nThe Auto File newsletter brings you exclusive insights on the biggest shifts driving the global automotive industry. Sign up here.",
+                "score": 0.38276476
+              },
+              {
+                "title": "Tesla to wind down Cybertruck production after years of poor sales in few markets",
+                "url": "https://www.nbcnews.com/tech/tech-news/tesla-wind-cybertruck-production-years-poor-sales-markets-rcna607817",
+                "source": "nbcnews.com",
+                "summary": "By Reuters\n\nTesla will wind down Cybertruck production at its Texas gigafactory around mid-2027, CEO Elon Musk said on Friday, after years of persistently weak sales for a futuristic model once touted as a rival to legacy pickup trucks that ultimately only sold in just a handful of markets because of its heavy, angular design. [...] The Cybercab, which has butterfly doors and no steering wheel, pedals or mirrors, is one of Musk's key bets in his push to turn Tesla into an AI and robotics company rather than just an automaker.\n\nMusk has said he sees it as Tesla's main autonomous model supplying a global network of robotaxis. [...] In response to a user on X, Musk called the Cybertruck the \"best vehicle Tesla has ever made\" and the wind-down the \"end of an era.\"\n\nTesla did not immediately respond to a Reuters request for comment sent outside regular business hours.",
+                "score": 0.374837
+              },
+              {
+                "title": "Tesla set to wind down production of Cybertruck | CNN Business",
+                "url": "https://www.cnn.com/2026/11/06/business/tesla-winding-down-production-of-cybertruck",
+                "source": "cnn.com",
+                "summary": "Musk has made clear that the future of Tesla will be providing rides in the company’s still nascent robotaxi service and humanoid robots, not selling electric vehicles. But both ambitious plans have thus far proven to be far more promise than reality. [...] At Tesla’s 2023 shareholder meeting, Musk said that his “reasonable guess” was that Tesla would be making 500,000 Cybertrucks a year. While Tesla has never broken out its sales of the Cybertruck separately, the company has reported sales of “other models” this year at fewer than 37,000. That metric is for cars other than its best-selling Model 3 and Model Y, and includes sales of Tesla’s discontinued Model S and Model X. [...] The subsequent sell-off in AI stocks battered shares of Tesla (TSLA) and SpaceX (SPCX), his two public companies, both of which fell more than 12% in the first two days of trading since the midterms. That has decreased Musk’s net worth by $113 billion, according to Bloomberg’s Billionaires Index, although he is still by far the richest person on the planet.",
+                "score": 0.35810664
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "GM05_out_of_scope_after_research",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_out_of_scope_latest_turn",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: lượt 1 là câu research nhưng lượt cuối yêu cầu viết code → chỉ xử lý lượt cuối, KHÔNG gọi lại lookup, từ chối/định hướng."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn, xong rồi"
+        },
+        {
+          "role": "user",
+          "content": "Giờ viết giúp mình hàm Python đảo ngược một chuỗi"
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Chào bạn! Vai trò của mình là trợ lý nghiên cứu và cập nhật thông tin (tìm kiếm web, bài báo khoa học, mạng xã hội). Yêu cầu viết hàm Python nằm ngoài phạm vi hỗ trợ hiện tại của mình. \n\nNếu bạn cần tìm kiếm thông tin, tin tức công nghệ, bài báo khoa học hay các chủ đề khác, hãy cho mình biết nhé!",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    }
+  ]
+}
